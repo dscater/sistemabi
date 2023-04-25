@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\DB;
 class SalidaProductoController extends Controller
 {
     public $validacion = [
-        'lugar' => 'required',
         'producto_id' => 'required',
         'cantidad' => 'required|numeric',
+        'fecha_salida' => 'required',
         'tipo_salida_id' => 'required',
     ];
 
@@ -38,25 +38,16 @@ class SalidaProductoController extends Controller
         DB::beginTransaction();
         try {
             $producto = Producto::find($request->producto_id);
-            if ($producto->descontar_stock == 'SI') {
-                // VALIDAR STOCK
-                if ($request->lugar == 'ALMACEN') {
-                    $stock_producto = Almacen::where("producto_id", $request->producto_id)->get()->first();
-                } else {
-                    $stock_producto = SucursalStock::where("producto_id", $request->producto_id)->get()->first();
-                }
-                if (!$stock_producto) {
-                    throw new Exception('No es posible realizar el registro debido a que el stock disponible es de 0');
-                } elseif ($stock_producto->stock_actual < $request->cantidad) {
-                    throw new Exception('No es posible realizar el registro debido a que la cantidad supera al stock actual ' . $stock_producto->stock_actual);
-                }
+            // VALIDAR STOCK
+            if ($producto->stock_actual < $request->cantidad) {
+                throw new Exception('No es posible realizar el registro debido a que la cantidad supera al stock actual ' . $producto->stock_actual);
             }
             // crear SalidaProducto
             $request["fecha_registro"] = date("Y-m-d");
             $nueva_salida_producto = SalidaProducto::create(array_map('mb_strtoupper', $request->all()));
 
             // registrar kardex
-            KardexProducto::registroEgreso($nueva_salida_producto->lugar, "SALIDA", $nueva_salida_producto->id, $nueva_salida_producto->producto, $nueva_salida_producto->cantidad, $nueva_salida_producto->producto->precio, $nueva_salida_producto->descripcion);
+            KardexProducto::registroEgreso("SALIDA", $nueva_salida_producto->id, $nueva_salida_producto->producto, $nueva_salida_producto->cantidad, $nueva_salida_producto->producto->precio, $nueva_salida_producto->descripcion);
 
             $datos_original = HistorialAccion::getDetalleRegistro($nueva_salida_producto, "salida_productos");
             HistorialAccion::create([
@@ -97,38 +88,27 @@ class SalidaProductoController extends Controller
         } else {
             DB::beginTransaction();
             try {
-                if ($salida_producto->producto->descontar_stock == 'SI') {
-                    // incrementar el stock
-                    Producto::incrementarStock($salida_producto->producto, $salida_producto->cantidad, $salida_producto->lugar);
-
-                    // VALIDAR STOCK
-                    if ($salida_producto->lugar == 'ALMACEN') {
-                        $stock_producto = Almacen::where("producto_id", $request->producto_id)->get()->first();
-                    } else {
-                        $stock_producto = SucursalStock::where("producto_id", $request->producto_id)->get()->first();
-                    }
-                    if (!$stock_producto) {
-                        throw new Exception('No es posible realizar el registro debido a que el stock disponible es de 0');
-                    } elseif ($stock_producto->stock_actual < $request->cantidad) {
-                        throw new Exception('No es posible realizar el registro debido a que la cantidad supera al stock disponible ' . $stock_producto->stock_actual);
-                    }
+                // incrementar el stock
+                Producto::incrementarStock($salida_producto->producto, $salida_producto->cantidad);
+                // VALIDAR STOCK
+                $stock_actual_producto = (float)$salida_producto->producto->stock_actual;
+                if ($stock_actual_producto < $request->cantidad) {
+                    Producto::decrementarStock($salida_producto->producto, $salida_producto->cantidad);
+                    throw new Exception('No es posible realizar el registro debido a que la cantidad supera al stock disponible ' . $stock_actual_producto);
                 }
 
                 $datos_original = HistorialAccion::getDetalleRegistro($salida_producto, "salida_productos");
                 $salida_producto->update(array_map('mb_strtoupper', $request->all()));
 
-                if ($salida_producto->producto->descontar_stock == 'SI') {
-                    // DESCONTAR STOCK
-                    Producto::decrementarStock($salida_producto->producto, $salida_producto->cantidad, $salida_producto->lugar);
-                }
+                // DESCONTAR STOCK
+                Producto::decrementarStock($salida_producto->producto, $salida_producto->cantidad);
 
                 // actualizar kardex
-                $kardex = KardexProducto::where("lugar", $salida_producto->lugar)
-                    ->where("producto_id", $salida_producto->producto_id)
+                $kardex = KardexProducto::where("producto_id", $salida_producto->producto_id)
                     ->where("tipo_registro", "SALIDA")
                     ->where("registro_id", $salida_producto->id)
                     ->get()->first();
-                KardexProducto::actualizaRegistrosKardex($kardex->id, $kardex->producto_id, $salida_producto->lugar);
+                KardexProducto::actualizaRegistrosKardex($kardex->id, $kardex->producto_id);
 
                 $datos_nuevo = HistorialAccion::getDetalleRegistro($salida_producto, "salida_productos");
                 HistorialAccion::create([
@@ -170,8 +150,7 @@ class SalidaProductoController extends Controller
     {
         DB::beginTransaction();
         try {
-            $eliminar_kardex = KardexProducto::where("lugar", $salida_producto->lugar)
-                ->where("tipo_registro", "SALIDA")
+            $eliminar_kardex = KardexProducto::where("tipo_registro", "SALIDA")
                 ->where("registro_id", $salida_producto->id)
                 ->where("producto_id", $salida_producto->producto_id)
                 ->get()
@@ -180,8 +159,7 @@ class SalidaProductoController extends Controller
             $id_producto = $eliminar_kardex->producto_id;
             $eliminar_kardex->delete();
 
-            $anterior = KardexProducto::where("lugar", $salida_producto->lugar)
-                ->where("producto_id", $id_producto)
+            $anterior = KardexProducto::where("producto_id", $id_producto)
                 ->where("id", "<", $id_kardex)
                 ->get()
                 ->last();
@@ -190,8 +168,7 @@ class SalidaProductoController extends Controller
                 $actualiza_desde = $anterior;
             } else {
                 // comprobar si existen registros posteriorres al actualizado
-                $siguiente = KardexProducto::where("lugar", $salida_producto->lugar)
-                    ->where("producto_id", $id_producto)
+                $siguiente = KardexProducto::where("producto_id", $id_producto)
                     ->where("id", ">", $id_kardex)
                     ->get()->first();
                 if ($siguiente)
@@ -200,12 +177,12 @@ class SalidaProductoController extends Controller
 
             if ($actualiza_desde) {
                 // actualizar a partir de este registro los sgtes. registros
-                KardexProducto::actualizaRegistrosKardex($actualiza_desde->id, $actualiza_desde->producto_id, $salida_producto->lugar);
+                KardexProducto::actualizaRegistrosKardex($actualiza_desde->id, $actualiza_desde->producto_id);
             }
 
             // incrementar el stock
             if ($salida_producto->producto->descontar_stock == 'SI') {
-                Producto::incrementarStock($salida_producto->producto, $salida_producto->cantidad, $salida_producto->lugar);
+                Producto::incrementarStock($salida_producto->producto, $salida_producto->cantidad);
             }
 
             $datos_original = HistorialAccion::getDetalleRegistro($salida_producto, "salida_productos");

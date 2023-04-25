@@ -10,19 +10,14 @@ class IngresoProducto extends Model
     use HasFactory;
 
     protected $fillable = [
-        "lugar", "producto_id", "proveedor_id", "precio_compra", "cantidad", "tipo_ingreso_id", "descripcion", "fecha_registro",
+        "producto_id", "proveedor_id", "precio_compra", "cantidad", "lote", "fecha_fabricacion", "fecha_caducidad", "tipo_ingreso_id", "descripcion", "fecha_registro",
     ];
 
-    protected $appends = ["nombre_producto", "nombre_producto_full"];
+    protected $appends = ["nombre_producto"];
 
     public function getNombreProductoAttribute()
     {
         return $this->producto->nombre;
-    }
-
-    public function getNombreProductoFullAttribute()
-    {
-        return $this->producto->codigo . ' | ' . $this->producto->nombre . ' | ' . $this->producto->medida;
     }
 
     public function producto()
@@ -34,6 +29,7 @@ class IngresoProducto extends Model
     {
         return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
+
     public function tipo_ingreso()
     {
         return $this->belongsTo(TipoIngreso::class, 'tipo_ingreso_id');

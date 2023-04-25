@@ -229,11 +229,9 @@ export default {
             modal_accion: "nuevo",
             oSalidaProducto: {
                 id: 0,
-                lugar: "",
                 producto_id: "",
-                proveedor_id: "",
-                precio_compra: "",
                 cantidad: "",
+                fecha_salida: "",
                 tipo_salida_id: "",
                 descripcion: "",
             },
@@ -259,11 +257,13 @@ export default {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
             this.oSalidaProducto.id = item.id;
-            this.oSalidaProducto.lugar = item.lugar ? item.lugar : "";
             this.oSalidaProducto.producto_id = item.producto_id
                 ? item.producto_id
                 : "";
             this.oSalidaProducto.cantidad = item.cantidad ? item.cantidad : "";
+            this.oSalidaProducto.fecha_salida = item.fecha_salida
+                ? item.fecha_salida
+                : "";
             this.oSalidaProducto.tipo_salida_id = item.tipo_salida_id
                 ? item.tipo_salida_id
                 : "";
@@ -273,8 +273,6 @@ export default {
             this.oSalidaProducto.nombre_producto = item.nombre_producto
                 ? item.nombre_producto
                 : "";
-            this.oSalidaProducto.nombre_producto_full =
-                item.nombre_producto_full ? item.nombre_producto_full : "";
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
@@ -362,9 +360,9 @@ export default {
             this.currentPage = 1;
         },
         limpiaSalidaProducto() {
-            this.oSalidaProducto.lugar = "";
             this.oSalidaProducto.producto_id = "";
             this.oSalidaProducto.cantidad = "";
+            this.oSalidaProducto.fecha_salida = "";
             this.oSalidaProducto.tipo_salida_id = "";
             this.oSalidaProducto.descripcion = "";
         },

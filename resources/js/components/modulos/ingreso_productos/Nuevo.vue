@@ -46,18 +46,13 @@
                                     placeholder="Buscar producto"
                                     :remote-method="buscarProducto"
                                     :loading="loading_buscador"
+                                    @change="muestraInfoProducto"
                                 >
                                     <el-option
                                         v-for="item in aux_lista_productos"
                                         :key="item.id"
-                                        :label="
-                                            item.codigo +
-                                            ' | ' +
-                                            item.nombre +
-                                            ' | ' +
-                                            item.medida
-                                        "
                                         :value="item.id"
+                                        :label="item.nombre"
                                     >
                                     </el-option>
                                 </el-select>
@@ -79,9 +74,34 @@
                                     class="form-control"
                                     readonly
                                     v-model="
-                                        ingreso_producto.nombre_producto_full
+                                        ingreso_producto.nombre_producto
                                     "
                                 />
+                            </div>
+                            <div
+                                class="col-md-12"
+                                v-if="oProducto && oProducto.codigo_almacen"
+                            >
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>Cód. Almacén</th>
+                                            <th>Cód. Producto</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {{ oProducto.codigo_almacen }}
+                                            </td>
+                                            <td>
+                                                {{ oProducto.codigo_producto }}
+                                            </td>
+                                            <td>{{ oProducto.nombre }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
@@ -102,7 +122,7 @@
                                     <el-option
                                         v-for="item in listProveedors"
                                         :key="item.id"
-                                        :label="item.nombre"
+                                        :label="item.razon_social"
                                         :value="item.id"
                                     >
                                     </el-option>
@@ -319,14 +339,15 @@ export default {
             type: Object,
             default: {
                 id: 0,
-                lugar: "",
                 producto_id: "",
                 proveedor_id: "",
                 precio_compra: "",
                 cantidad: "",
+                lote: "",
+                fecha_fabricacion: "",
+                fecha_caducidad: "",
                 tipo_ingreso_id: "",
                 descripcion: "",
-                nombre_producto_full: "",
             },
         },
     },
@@ -369,6 +390,11 @@ export default {
             loading_buscador: false,
             timeOutProductos: null,
             sw_busqueda: "todos",
+            oProducto: {
+                codigo_almacen: "",
+                codigo_producto: "",
+                nombre: "",
+            },
         };
     },
     mounted() {
@@ -399,12 +425,6 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "lugar",
-                    this.ingreso_producto.lugar
-                        ? this.ingreso_producto.lugar
-                        : ""
-                );
-                formdata.append(
                     "producto_id",
                     this.ingreso_producto.producto_id
                         ? this.ingreso_producto.producto_id
@@ -426,6 +446,24 @@ export default {
                     "cantidad",
                     this.ingreso_producto.cantidad
                         ? this.ingreso_producto.cantidad
+                        : ""
+                );
+                formdata.append(
+                    "lote",
+                    this.ingreso_producto.lote
+                        ? this.ingreso_producto.lote
+                        : ""
+                );
+                formdata.append(
+                    "fecha_fabricacion",
+                    this.ingreso_producto.fecha_fabricacion
+                        ? this.ingreso_producto.fecha_fabricacion
+                        : ""
+                );
+                formdata.append(
+                    "fecha_caducidad",
+                    this.ingreso_producto.fecha_caducidad
+                        ? this.ingreso_producto.fecha_caducidad
                         : ""
                 );
                 formdata.append(
@@ -515,13 +553,15 @@ export default {
         },
         limpiaIngresoProducto() {
             this.errors = [];
-            this.ingreso_producto.lugar = "";
-            this.ingreso_producto.producto_id = "";
-            this.ingreso_producto.proveedor_id = "";
-            this.ingreso_producto.precio_compra = "";
-            this.ingreso_producto.cantidad = "";
-            this.ingreso_producto.tipo_ingreso_id = "";
-            this.ingreso_producto.descripcion = "";
+            // this.oIngresoProducto.producto_id = "";
+            // this.oIngresoProducto.proveedor_id = "";
+            // this.oIngresoProducto.precio_compra = "";
+            // this.oIngresoProducto.cantidad = "";
+            // this.oIngresoProducto.lote = "";
+            // this.oIngresoProducto.fecha_fabricacion = "";
+            // this.oIngresoProducto.fecha_caducidad = "";
+            // this.oIngresoProducto.tipo_ingreso_id = "";
+            // this.oIngresoProducto.descripcion = "";
         },
         buscarProducto(query) {
             this.aux_lista_productos = [];
@@ -549,6 +589,16 @@ export default {
             } else {
                 this.loading_buscador = false;
                 this.aux_lista_productos = [];
+            }
+        },
+        muestraInfoProducto() {
+            if (this.ingreso_producto.producto_id != "") {
+                let elem = this.aux_lista_productos.filter(
+                    (element) => element.id == this.ingreso_producto.producto_id
+                );
+                this.oProducto = elem[0];
+            } else {
+                this.oProducto = null;
             }
         },
     },

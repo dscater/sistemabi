@@ -12,7 +12,7 @@ class KardexProducto extends Model
     use HasFactory;
 
     protected $fillable = [
-        "lugar", "lugar_id", "tipo_registro", "registro_id",
+        "tipo_registro", "registro_id",
         "producto_id", "detalle", "precio", "tipo_is",
         "cantidad_ingreso", "cantidad_salida", "cantidad_saldo", "cu",
         "monto_ingreso", "monto_salida", "monto_saldo", "fecha",
@@ -24,17 +24,11 @@ class KardexProducto extends Model
         return $this->belongsTo(Producto::class, 'producto_id');
     }
 
-    public function sucursal()
-    {
-        return $this->belongsTo(Sucursal::class, 'lugar_id');
-    }
-
     // REGISTRAR INGRESO
-    public static function registroIngreso($lugar, $tipo_registro, $registro_id = 0, Producto $producto, $cantidad, $precio, $detalle = "")
+    public static function registroIngreso($tipo_registro, $registro_id = 0, Producto $producto, $cantidad, $precio, $detalle = "")
     {
         //buscar el ultimo registro y usar sus valores
         $ultimo = KardexProducto::where('producto_id', $producto->id)
-            ->where("lugar", $lugar)
             ->orderBy('created_at', 'asc')
             ->get()
             ->last();
@@ -44,7 +38,6 @@ class KardexProducto extends Model
                 $detalle = "INGRESO DE PRODUCTO";
             }
             KardexProducto::create([
-                'lugar' => $lugar,
                 'tipo_registro' => $tipo_registro, //INGRESO, EGRESO, VENTA, COMPRA,etc...
                 'registro_id' => $registro_id,
                 'producto_id' => $producto->id,
@@ -61,7 +54,6 @@ class KardexProducto extends Model
         } else {
             $detalle = "VALOR INICIAL";
             KardexProducto::create([
-                'lugar' => $lugar,
                 'tipo_registro' => $tipo_registro, //INGRESO, EGRESO, VENTA,etc...
                 'registro_id' => $registro_id,
                 'producto_id' => $producto->id,
@@ -78,19 +70,16 @@ class KardexProducto extends Model
         }
 
         // INCREMENTAR STOCK
-        if ($producto->descontar_stock == 'SI') {
-            Producto::incrementarStock($producto, $cantidad, $lugar);
-        }
+        Producto::incrementarStock($producto, $cantidad);
 
         return true;
     }
 
     // REGISTRAR EGRESO
-    public static function registroEgreso($lugar, $tipo_registro, $registro_id = 0, Producto $producto, $cantidad, $precio, $detalle = "")
+    public static function registroEgreso($tipo_registro, $registro_id = 0, Producto $producto, $cantidad, $precio, $detalle = "")
     {
         //buscar el ultimo registro y usar sus valores
         $ultimo = KardexProducto::where('producto_id', $producto->id)
-            ->where("lugar", $lugar)
             ->orderBy('created_at', 'asc')
             ->get()
             ->last();
@@ -101,7 +90,6 @@ class KardexProducto extends Model
         }
 
         KardexProducto::create([
-            'lugar' => $lugar,
             'tipo_registro' => $tipo_registro,
             'registro_id' => $registro_id,
             'producto_id' => $producto->id,
@@ -116,9 +104,7 @@ class KardexProducto extends Model
             'fecha' => date('Y-m-d'),
         ]);
 
-        if ($producto->descontar_stock == 'SI') {
-            Producto::decrementarStock($producto, $cantidad, $lugar);
-        }
+        Producto::decrementarStock($producto, $cantidad);
 
         return true;
     }
@@ -126,21 +112,18 @@ class KardexProducto extends Model
     // ACTUALIZA REGISTROS KARDEX
     // FUNCIÓN QUE ACTUALIZA LOS REGISTROS DEL KARDEX DE UN LUGAR
     // SOLO ACTUALIZARA LOS REGISTROS POSTERIORES AL REGISTRO ACTUALIZADO
-    public static function actualizaRegistrosKardex($id, $producto_id, $lugar)
+    public static function actualizaRegistrosKardex($id, $producto_id)
     {
-        $siguientes = KardexProducto::where("lugar", $lugar)
-            ->where("producto_id", $producto_id)
+        $siguientes = KardexProducto::where("producto_id", $producto_id)
             ->where("id", ">=", $id)
             ->get();
 
         foreach ($siguientes as $item) {
-            $anterior = KardexProducto::where("lugar", $lugar)
-                ->where("producto_id", $producto_id)
+            $anterior = KardexProducto::where("producto_id", $producto_id)
                 ->where("id", "<", $item->id)->get()
                 ->last();
 
             $datos_actualizacion = [
-                "lugar" => $item->lugar,
                 "precio" => 0,
                 "cantidad_ingreso" => NULL,
                 "cantidad_salida" => NULL,
@@ -192,43 +175,6 @@ class KardexProducto extends Model
                     }
 
                     break;
-                case 'TRANSFERENCIA':
-                    $transferencia_producto = TransferenciaProducto::find($item->registro_id);
-                    $monto = (float)$transferencia_producto->cantidad * (float)$transferencia_producto->producto->precio;
-                    if ($item->tipo_is == 'INGRESO') {
-                        if ($anterior) {
-                            $datos_actualizacion["precio"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["cantidad_ingreso"] =  $transferencia_producto->cantidad;
-                            $datos_actualizacion["cantidad_saldo"] = (float)$anterior->cantidad_saldo + (float)$transferencia_producto->cantidad;
-                            $datos_actualizacion["cu"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["monto_ingreso"] = $monto;
-                            $datos_actualizacion["monto_saldo"] = (float)$anterior->monto_saldo + $monto;
-                        } else {
-                            $datos_actualizacion["precio"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["cantidad_ingreso"] =  $transferencia_producto->cantidad;
-                            $datos_actualizacion["cantidad_saldo"] = (float)$transferencia_producto->cantidad;
-                            $datos_actualizacion["cu"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["monto_ingreso"] = $monto;
-                            $datos_actualizacion["monto_saldo"] = $monto;
-                        }
-                    } else {
-                        if ($anterior) {
-                            $datos_actualizacion["precio"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["cantidad_salida"] =  $transferencia_producto->cantidad;
-                            $datos_actualizacion["cantidad_saldo"] = (float)$anterior->cantidad_saldo - (float)$transferencia_producto->cantidad;
-                            $datos_actualizacion["cu"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["monto_salida"] = $monto;
-                            $datos_actualizacion["monto_saldo"] =  (float)$anterior->monto_saldo - $monto;
-                        } else {
-                            $datos_actualizacion["precio"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["cantidad_salida"] =  $transferencia_producto->cantidad;
-                            $datos_actualizacion["cantidad_saldo"] = (float)$transferencia_producto->cantidad * (-1);
-                            $datos_actualizacion["cu"] = $transferencia_producto->producto->precio;
-                            $datos_actualizacion["monto_salida"] = $monto;
-                            $datos_actualizacion["monto_saldo"] = $monto * (-1);
-                        }
-                    }
-                    break;
                 case 'VENTA':
                     $detalle_orden = DetalleOrden::find($item->registro_id);
                     $monto = (float)$detalle_orden->cantidad * (float)$detalle_orden->precio;
@@ -266,10 +212,8 @@ class KardexProducto extends Model
                         $datos_actualizacion["monto_ingreso"] = $monto;
                         $datos_actualizacion["monto_saldo"] = $monto;
                     }
-
                     break;
             }
-
 
             $item->update($datos_actualizacion);
         }

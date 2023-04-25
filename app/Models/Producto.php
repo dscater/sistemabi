@@ -27,42 +27,17 @@ class Producto extends Model
 
 
     // FUNCIONES PARA INCREMETAR Y DECREMENTAR EL STOCK
-    public static function incrementarStock($producto, $cantidad, $lugar)
+    public static function incrementarStock($producto, $cantidad)
     {
-        if ($lugar == 'ALMACEN') {
-            if (!$producto->almacen) {
-                $producto->almacen()->create([
-                    "stock_actual" => $cantidad
-                ]);
-            } else {
-                $producto->almacen->stock_actual = (float)$producto->almacen->stock_actual + $cantidad;
-                $producto->almacen->save();
-            }
-        } else {
-            $stock_sucursal = $producto->stock_sucursal;
-            if (!$stock_sucursal) {
-                $producto->stock_sucursal()->create([
-                    "stock_actual" => $cantidad
-                ]);
-            } else {
-                $stock_sucursal->stock_actual = (float)$stock_sucursal->stock_actual + $cantidad;
-                $stock_sucursal->save();
-            }
-        }
+        $producto->stock_actual = (float)$producto->stock_actual + $cantidad;
+        $producto->save();
         return true;
     }
-    public static function decrementarStock($producto, $cantidad, $lugar)
+    public static function decrementarStock($producto, $cantidad)
     {
-        if ($producto->descontar_stock == 'SI') {
-            if ($lugar == 'ALMACEN') {
-                $producto->almacen->stock_actual = (float)$producto->almacen->stock_actual - $cantidad;
-                $producto->almacen->save();
-            } else {
-                $stock_sucursal = $producto->stock_sucursal;
-                $stock_sucursal->stock_actual = (float)$stock_sucursal->stock_actual - $cantidad;
-                $stock_sucursal->save();
-            }
-        }
+        $producto->stock_actual = (float)$producto->stock_actual - $cantidad;
+        $producto->save();
+
         return true;
     }
 }

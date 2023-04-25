@@ -232,11 +232,13 @@ export default {
             modal_accion: "nuevo",
             oIngresoProducto: {
                 id: 0,
-                lugar: "",
                 producto_id: "",
                 proveedor_id: "",
                 precio_compra: "",
                 cantidad: "",
+                lote: "",
+                fecha_fabricacion: "",
+                fecha_caducidad: "",
                 tipo_ingreso_id: "",
                 descripcion: "",
             },
@@ -262,7 +264,6 @@ export default {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
             this.oIngresoProducto.id = item.id;
-            this.oIngresoProducto.lugar = item.lugar ? item.lugar : "";
             this.oIngresoProducto.producto_id = item.producto_id
                 ? item.producto_id
                 : "";
@@ -273,6 +274,13 @@ export default {
                 ? item.precio_compra
                 : "";
             this.oIngresoProducto.cantidad = item.cantidad ? item.cantidad : "";
+            this.oIngresoProducto.lote = item.lote ? item.lote : "";
+            this.oIngresoProducto.fecha_fabricacion = item.fecha_fabricacion
+                ? item.fecha_fabricacion
+                : "";
+            this.oIngresoProducto.fecha_caducidad = item.fecha_caducidad
+                ? item.fecha_caducidad
+                : "";
             this.oIngresoProducto.tipo_ingreso_id = item.tipo_ingreso_id
                 ? item.tipo_ingreso_id
                 : "";
@@ -281,9 +289,6 @@ export default {
                 : "";
             this.oIngresoProducto.nombre_producto = item.nombre_producto
                 ? item.nombre_producto
-                : "";
-            this.oIngresoProducto.nombre_producto_full = item.nombre_producto_full
-                ? item.nombre_producto_full
                 : "";
 
             this.modal_accion = "edit";
@@ -373,11 +378,13 @@ export default {
             this.currentPage = 1;
         },
         limpiaIngresoProducto() {
-            this.oIngresoProducto.lugar = "";
             this.oIngresoProducto.producto_id = "";
             this.oIngresoProducto.proveedor_id = "";
             this.oIngresoProducto.precio_compra = "";
             this.oIngresoProducto.cantidad = "";
+            this.oIngresoProducto.lote = "";
+            this.oIngresoProducto.fecha_fabricacion = "";
+            this.oIngresoProducto.fecha_caducidad = "";
             this.oIngresoProducto.tipo_ingreso_id = "";
             this.oIngresoProducto.descripcion = "";
         },

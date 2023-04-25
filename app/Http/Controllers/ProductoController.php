@@ -210,24 +210,15 @@ class ProductoController extends Controller
 
         $productos = [];
         if ($sw_busqueda == 'todos') {
-            $productos = Producto::select("productos.*")
-                ->join("grupos", "grupos.id", "=", "productos.grupo_id")
-                ->orWhere("productos.id", "LIKE", "%$value%")
-                ->orWhere("productos.codigo", "LIKE", "%$value%")
-                ->orWhere("productos.nombre", "LIKE", "%$value%")
-                ->orWhere("productos.medida", "LIKE", "%$value%")
-                ->orWhere("productos.precio", "LIKE", "%$value%")
-                ->orWhere("productos.precio_mayor", "LIKE", "%$value%")
-                ->orWhere("productos.fecha_registro", "LIKE", "%$value%")
-                ->orWhere("grupos.nombre", "LIKE", "%$value%")
-                ->orderBy("grupos.nombre", "ASC")
-                ->orderBy("productos.codigo", "ASC")
-                ->orderBy("productos.medida", "ASC")
+            $productos = Producto::where("codigo_almacen", "LIKE", "%$value%")
+                ->orWhere("codigo_producto", "LIKE", "%$value%")
+                ->orWhere("nombre", "LIKE", "%$value%")
+                ->orderBy("codigo_almacen", "ASC")
+                ->orderBy("codigo_producto", "ASC")
+                ->orderBy("nombre", "ASC")
                 ->get()->take(100);
         } else {
-            $productos = Producto::select("productos.*")
-                ->join("grupos", "grupos.id", "=", "productos.grupo_id")
-                ->where("productos." . $sw_busqueda, $value)
+            $productos = Producto::where("productos." . $sw_busqueda, $value)
                 ->get()->take(100);
         }
 

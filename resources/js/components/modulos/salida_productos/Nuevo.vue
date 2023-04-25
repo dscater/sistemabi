@@ -46,18 +46,13 @@
                                     placeholder="Buscar producto"
                                     :remote-method="buscarProducto"
                                     :loading="loading_buscador"
+                                    @change="muestraInfoProducto"
                                 >
                                     <el-option
                                         v-for="item in aux_lista_productos"
                                         :key="item.id"
-                                        :label="
-                                            item.codigo +
-                                            ' | ' +
-                                            item.nombre +
-                                            ' | ' +
-                                            item.medida
-                                        "
                                         :value="item.id"
+                                        :label="item.nombre"
                                     >
                                     </el-option>
                                 </el-select>
@@ -78,8 +73,35 @@
                                     type="readonly"
                                     class="form-control"
                                     readonly
-                                    v-model="salida_producto.nombre_producto_full"
+                                    v-model="
+                                        salida_producto.nombre_producto_full
+                                    "
                                 />
+                            </div>
+                            <div
+                                class="col-md-12"
+                                v-if="oProducto && oProducto.codigo_almacen"
+                            >
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bg-primary">
+                                            <th>Cód. Almacén</th>
+                                            <th>Cód. Producto</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {{ oProducto.codigo_almacen }}
+                                            </td>
+                                            <td>
+                                                {{ oProducto.codigo_producto }}
+                                            </td>
+                                            <td>{{ oProducto.nombre }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
@@ -113,7 +135,9 @@
                                 <el-input
                                     type="date"
                                     placeholder="Fecha de salida"
-                                    :class="{ 'is-invalid': errors.fecha_salida }"
+                                    :class="{
+                                        'is-invalid': errors.fecha_salida,
+                                    }"
                                     v-model="salida_producto.fecha_salida"
                                     clearable
                                 >
@@ -264,6 +288,11 @@ export default {
             loading_buscador: false,
             timeOutProductos: null,
             sw_busqueda: "todos",
+            oProducto: {
+                codigo_almacen: "",
+                codigo_producto: "",
+                nombre: "",
+            },
         };
     },
     mounted() {
@@ -271,11 +300,6 @@ export default {
         this.getTipoSalidas();
     },
     methods: {
-        getProveedors() {
-            axios.get("/admin/proveedors").then((response) => {
-                this.listProveedors = response.data.proveedors;
-            });
-        },
         getTipoSalidas() {
             axios.get("/admin/tipo_salidas").then((response) => {
                 this.listTipoSalidas = response.data.tipo_salidas;
@@ -293,10 +317,6 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "lugar",
-                    this.salida_producto.lugar ? this.salida_producto.lugar : ""
-                );
-                formdata.append(
                     "producto_id",
                     this.salida_producto.producto_id
                         ? this.salida_producto.producto_id
@@ -306,6 +326,12 @@ export default {
                     "cantidad",
                     this.salida_producto.cantidad
                         ? this.salida_producto.cantidad
+                        : ""
+                );
+                formdata.append(
+                    "fecha_salida",
+                    this.salida_producto.fecha_salida
+                        ? this.salida_producto.fecha_salida
                         : ""
                 );
                 formdata.append(
@@ -394,10 +420,10 @@ export default {
         },
         limpiaSalidaProducto() {
             this.errors = [];
-            this.salida_producto.lugar = "";
             this.salida_producto.producto_id = "";
             this.salida_producto.cantidad = "";
             this.salida_producto.tipo_salida_id = "";
+            this.salida_producto.fecha_salida = "";
             this.salida_producto.descripcion = "";
         },
         buscarProducto(query) {
@@ -426,6 +452,16 @@ export default {
             } else {
                 this.loading_buscador = false;
                 this.aux_lista_productos = [];
+            }
+        },
+        muestraInfoProducto() {
+            if (this.salida_producto.producto_id != "") {
+                let elem = this.aux_lista_productos.filter(
+                    (element) => element.id == this.salida_producto.producto_id
+                );
+                this.oProducto = elem[0];
+            } else {
+                this.oProducto = null;
             }
         },
     },
