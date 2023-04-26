@@ -54,16 +54,6 @@
                                             <br />
                                             CI/NIT: {{ oVenta.nit }}
                                             <br />
-                                            Tipo:
-                                            {{ oVenta.tipo_venta }} -
-                                            <span
-                                                v-if="
-                                                    oVenta.tipo_venta ==
-                                                    'A CRÉDITO'
-                                                "
-                                                >{{ oVenta.estado }}</span
-                                            >
-                                            <br />
                                             Caja:
                                             {{ oVenta.user?.usuario }}
                                             <br />
@@ -86,7 +76,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr
-                                                    v-for="item in oVenta.detalle_ordens"
+                                                    v-for="item in oVenta.detalle_ventas"
                                                 >
                                                     <td class="centreado">
                                                         {{ item.cantidad }}
@@ -130,9 +120,7 @@
                                                         DESCUENTO %
                                                     </td>
                                                     <td class="centreado bold">
-                                                        {{
-                                                            oVenta.descuento
-                                                        }}
+                                                        {{ oVenta.descuento }}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -147,55 +135,10 @@
                                                         TOTAL FINAL
                                                     </td>
                                                     <td class="centreado bold">
-                                                        {{
-                                                            oVenta.total_final
-                                                        }}
+                                                        {{ oVenta.total_final }}
                                                     </td>
                                                 </tr>
                                             </table>
-                                        </div>
-                                        <div
-                                            class="elemento"
-                                            style="
-                                                border-top: dashed 1px;
-                                                padding-top: 7px;
-                                                marigin-top: 5px;
-                                                font-weight: bold;
-                                            "
-                                            v-if="devolucion"
-                                        >
-                                            DEVOLUCIONES
-                                        </div>
-                                        <div class="cobro" v-if="devolucion">
-                                            <table>
-                                                <tr class="punteado">
-                                                    <td class="centreado">
-                                                        CANTIDAD
-                                                    </td>
-                                                    <td class="centreado">
-                                                        PRODUCTO
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    v-for="item in devolucion.devolucion_detalles"
-                                                    v-if="item.cantidad > 0"
-                                                >
-                                                    <td class="centreado">
-                                                        {{ item.cantidad }}
-                                                    </td>
-                                                    <td class="izquierda">
-                                                        {{
-                                                            item.producto.nombre
-                                                        }}
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div
-                                            class="elemento detalle bold"
-                                            v-if="devolucion"
-                                        >
-                                            TOTAL FINAL: {{ total_final }}
                                         </div>
                                         <div class="izquierda literal">
                                             Son: {{ literal }}
@@ -216,7 +159,7 @@
                                         <router-link
                                             class="btn btn-outline-primary mt-2 btn-flat mb-1 btn-block"
                                             :to="{
-                                                name: 'orden_ventas.edit',
+                                                name: 'ventas.edit',
                                                 params: {
                                                     id: oVenta.id,
                                                 },
@@ -268,7 +211,7 @@ export default {
                 nit: "",
                 venta_mayor: "NO",
                 total: "0.00",
-                detalle_ordens: [],
+                detalle_ventas: [],
             },
             total_final: 0,
             literal: "",
@@ -295,14 +238,15 @@ export default {
             });
         },
         getVenta() {
-            axios.get("/admin/orden_ventas/" + this.id).then((response) => {
+            axios.get("/admin/ventas/" + this.id).then((response) => {
                 this.oVenta = response.data;
-                this.getDevolucion();
+                this.total_final = this.oVenta.total_final;
+                this.getLiteral();
             });
         },
         getLiteral() {
             axios
-                .get("/admin/orden_ventas/info/getLiteral", {
+                .get("/admin/ventas/info/getLiteral", {
                     params: {
                         total: this.total_final,
                     },
@@ -315,25 +259,6 @@ export default {
                             self.imrpimirContenedor();
                         }, 300);
                     }
-                });
-        },
-        getDevolucion() {
-            axios
-                .get("/admin/orden_ventas/info/devolucions", {
-                    params: {
-                        id: this.oVenta.id,
-                    },
-                })
-                .then((response) => {
-                    this.devolucion = response.data.devolucion;
-                    this.total_cantidad_devolucion =
-                        response.data.total_cantidad_devolucion;
-                    if (this.devolucion && this.total_cantidad_devolucion > 0) {
-                        this.total_final = response.data.total_final;
-                    } else {
-                        this.total_final = this.oVenta.total_final;
-                    }
-                    this.getLiteral();
                 });
         },
         imrpimirContenedor() {

@@ -226,6 +226,7 @@ export default {
                 ci_exp: "",
                 nit: "",
                 fono: [],
+                correo: "",
                 dir: "",
             },
             currentPage: 1,
@@ -255,6 +256,7 @@ export default {
             this.oCliente.ci_exp = item.ci_exp ? item.ci_exp : "";
             this.oCliente.nit = item.nit ? item.nit : "";
             this.oCliente.fono = item.fono ? item.fono.split("; ") : "";
+            this.oCliente.correo = item.correo ? item.correo : "";
             this.oCliente.dir = item.dir ? item.dir : "";
             this.modal_accion = "edit";
             this.muestra_modal = true;
@@ -348,6 +350,7 @@ export default {
             this.oCliente.ci_exp = "";
             this.oCliente.nit = "";
             this.oCliente.fono = [];
+            this.oCliente.correo = "";
             this.oCliente.dir = "";
         },
         formatoFecha(date) {

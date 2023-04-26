@@ -176,7 +176,7 @@ class KardexProducto extends Model
 
                     break;
                 case 'VENTA':
-                    $detalle_orden = DetalleOrden::find($item->registro_id);
+                    $detalle_orden = DetalleVenta::find($item->registro_id);
                     $monto = (float)$detalle_orden->cantidad * (float)$detalle_orden->precio;
                     if ($anterior) {
                         $datos_actualizacion["precio"] = $detalle_orden->precio;

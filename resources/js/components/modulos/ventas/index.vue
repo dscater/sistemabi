@@ -141,10 +141,6 @@
                                                             @click="
                                                                 eliminaVenta(
                                                                     row.item.id,
-                                                                    row.item
-                                                                        .caja
-                                                                        .nombre +
-                                                                        ' - ' +
                                                                         row.item
                                                                             .cliente
                                                                             .nombre +
@@ -224,11 +220,8 @@ export default {
                     sortable: true,
                 },
                 { key: "total", label: "Total", sortable: true },
-                {
-                    key: "tipo_venta",
-                    label: "Tipo",
-                    sortable: true,
-                },
+                { key: "descuento", label: "Descuento %", sortable: true },
+                { key: "total_final", label: "Total final", sortable: true },
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",

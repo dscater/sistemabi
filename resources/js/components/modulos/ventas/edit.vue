@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <FormVenta
-                                    :orden_venta="oVenta"
+                                    :venta="oVenta"
                                     :accion="'edit'"
                                     @envioFormulario="recargaFormulario"
                                 ></FormVenta>
@@ -48,7 +48,7 @@ export default {
                 nit: "",
                 venta_mayor: "NO",
                 total: "0.00",
-                detalle_ordens: [],
+                detalle_ventas: [],
             },
         };
     },
@@ -59,7 +59,7 @@ export default {
     methods: {
         recargaFormulario(id) {
             this.$router.push({
-                name: "orden_ventas.ticket",
+                name: "ventas.ticket",
                 params: {
                     id: id,
                     imprime: true,
@@ -68,7 +68,7 @@ export default {
             // location.reload();
         },
         getVenta() {
-            axios.get("/admin/orden_ventas/" + this.id).then((response) => {
+            axios.get("/admin/ventas/" + this.id).then((response) => {
                 this.oVenta = response.data;
             });
         },

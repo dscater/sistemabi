@@ -74,7 +74,7 @@
                                     class="form-control"
                                     readonly
                                     v-model="
-                                        salida_producto.nombre_producto_full
+                                        salida_producto.nombre_producto
                                     "
                                 />
                             </div>

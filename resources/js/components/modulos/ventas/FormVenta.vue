@@ -8,7 +8,8 @@
                             <div
                                 class="card-header bg-primary text-md font-weight-bold"
                             >
-                                <i class="fa fa-info-circle"></i> INFORMACIÓN DE LA VENTA
+                                <i class="fa fa-info-circle"></i> INFORMACIÓN DE
+                                LA VENTA
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -34,7 +35,7 @@
                                             :class="{
                                                 'is-invalid': errors.cliente_id,
                                             }"
-                                            v-model="orden_venta.cliente_id"
+                                            v-model="venta.cliente_id"
                                             clearable
                                             filterable
                                             @change="getCliente()"
@@ -79,7 +80,7 @@
                                                         <select
                                                             class="form-control"
                                                             v-model="
-                                                                orden_venta.nit
+                                                                venta.nit
                                                             "
                                                         >
                                                             <option value="0">
@@ -150,14 +151,8 @@
                                             <el-option
                                                 v-for="item in aux_lista_productos"
                                                 :key="item.id"
-                                                :value="item.producto.id"
-                                                :label="
-                                                    item.producto.codigo +
-                                                    ' | ' +
-                                                    item.producto.nombre +
-                                                    ' | ' +
-                                                    item.producto.medida
-                                                "
+                                                :value="item.id"
+                                                :label="item.nombre"
                                             >
                                             </el-option>
                                         </el-select>
@@ -185,22 +180,21 @@
                                             <tbody>
                                                 <tr>
                                                     <td
-                                                        data-col="Código: "
+                                                        data-col="Cód. almacén: "
                                                         v-text="
-                                                            oProducto?.codigo
+                                                            oProducto?.codigo_almacen
                                                         "
                                                     ></td>
                                                     <td
-                                                        data-col="Nombre: "
+                                                        data-col="Cód. producto: "
+                                                        v-text="
+                                                            oProducto?.codigo_producto
+                                                        "
+                                                    ></td>
+                                                    <td
+                                                        data-col="Nombre:"
                                                         v-text="
                                                             oProducto?.nombre
-                                                        "
-                                                    ></td>
-                                                    <td
-                                                        data-col="Grupo:"
-                                                        v-text="
-                                                            oProducto?.grupo
-                                                                .nombre
                                                         "
                                                     ></td>
                                                     <td
@@ -278,12 +272,12 @@
                                 <tbody>
                                     <tr
                                         v-if="
-                                            orden_venta.detalle_ordens.length >
+                                            venta.detalle_ventas.length >
                                             0
                                         "
                                         v-for="(
                                             item, index
-                                        ) in orden_venta.detalle_ordens"
+                                        ) in venta.detalle_ventas"
                                     >
                                         <td data-col="Nombre: ">
                                             {{ item.producto.nombre }}
@@ -299,7 +293,7 @@
                                         </td>
                                         <td class="text-center">
                                             <button
-                                                v-if="orden_venta.editable"
+                                                v-if="venta.editable"
                                                 class="btn-sm btn-flat btn-danger"
                                                 @click.prevent="
                                                     quitarDetalleVenta(
@@ -314,7 +308,7 @@
                                     </tr>
                                     <tr
                                         v-if="
-                                            orden_venta.detalle_ordens.length ==
+                                            venta.detalle_ventas.length ==
                                             0
                                         "
                                     >
@@ -335,7 +329,7 @@
                                             data-col="TOTAL: "
                                             class="font-weight-bold text-lg"
                                         >
-                                            {{ orden_venta.total }}
+                                            {{ venta.total }}
                                         </td>
                                         <td class="ocultar"></td>
                                     </tr>
@@ -362,7 +356,7 @@
                         max="100"
                         min="0"
                         step="0.01"
-                        v-model="orden_venta.descuento"
+                        v-model="venta.descuento"
                         @keyup="sumaTotalVenta"
                         @change="sumaTotalVenta"
                     />
@@ -385,7 +379,7 @@
                         :class="{
                             'is-invalid': errors.total_final,
                         }"
-                        v-model="orden_venta.total_final"
+                        v-model="venta.total_final"
                         readonly
                     />
                     <span
@@ -403,33 +397,33 @@
                         :loading="enviando"
                         @click="enviarFormulario()"
                         v-html="textoBoton"
-                        :disabled="orden_venta.detalle_ordens.length <= 0"
-                        v-if="orden_venta.editable || accion == 'nuevo'"
+                        :disabled="venta.detalle_ventas.length <= 0"
+                        v-if="venta.editable || accion == 'nuevo'"
                     ></el-button>
                     <el-button type="info" class="btn-block" v-else>
                         No editable, debido a que existe una
                         devolución</el-button
                     >
                     <router-link
-                        v-if="this.orden_venta.id != 0"
+                        v-if="this.venta.id != 0"
                         class="btn btn-success btn-lg btn-block"
-                        :to="{ name: 'orden_ventas.ticket' }"
+                        :to="{ name: 'ventas.ticket' }"
                         ><i class="fa fa-print"></i> Imprimir
                         Ticket</router-link
                     >
 
                     <router-link
-                        :to="{ name: 'orden_ventas.create' }"
-                        v-if="this.orden_venta.id != 0"
+                        :to="{ name: 'ventas.create' }"
+                        v-if="this.venta.id != 0"
                         class="btn btn-danger btn-lg btn-block"
                         ><i class="fa fa-plus"></i> Realizar nueva
                         orden</router-link
                     >
 
                     <router-link
-                        :to="{ name: 'orden_ventas.index' }"
+                        :to="{ name: 'ventas.index' }"
                         class="btn btn-default btn-lg btn-block"
-                        ><i class="fa fa-cash-register"></i> Volver a orden de
+                        ><i class="fa fa-cash-register"></i> Volver a
                         ventas</router-link
                     >
                 </div>
@@ -456,7 +450,7 @@ export default {
             type: String,
             default: "nuevo",
         },
-        orden_venta: {
+        venta: {
             type: Object,
             default() {
                 return {
@@ -467,14 +461,14 @@ export default {
                     total: "0.00",
                     descuento: "0",
                     total_final: "0.00",
-                    detalle_ordens: [],
+                    detalle_ventas: [],
                     editable: true,
                 };
             },
         },
     },
     watch: {
-        orden_venta(newVal, oldVal) {
+        venta(newVal, oldVal) {
             if (newVal.id != 0) {
                 this.getClientes();
                 this.getCliente();
@@ -485,9 +479,9 @@ export default {
     computed: {
         textoBoton() {
             if (this.accion == "nuevo") {
-                return '<i class="fa fa-save"></i> Registrar orden de venta';
+                return '<i class="fa fa-save"></i> Registrar venta';
             } else {
-                return '<i class="fa fa-edit"></i> Actualizar orden de venta';
+                return '<i class="fa fa-edit"></i> Actualizar venta';
             }
         },
     },
@@ -496,7 +490,6 @@ export default {
             user: JSON.parse(localStorage.getItem("user")),
             enviando: false,
             producto_id: "",
-            venta_mayor: "NO",
             cantidad: 1,
             errors: [],
             listClientes: [],
@@ -535,11 +528,11 @@ export default {
         };
     },
     mounted() {
-        if (this.orden_venta.id == 0) {
-            this.orden_venta.fecha = this.fechaActual();
+        if (this.venta.id == 0) {
+            this.venta.fecha = this.fechaActual();
         }
         if (this.user.tipo == "CAJA") {
-            this.orden_venta.caja_id = this.user.caja_usuario.caja_id;
+            this.venta.caja_id = this.user.caja_usuario.caja_id;
         }
         this.getClientes();
         this.iniciaSeleccionFilas();
@@ -547,13 +540,13 @@ export default {
     methods: {
         // OBTENER LISTADOS E INFORMACIÓN
         getCliente() {
-            if (this.orden_venta.cliente_id != "") {
+            if (this.venta.cliente_id != "") {
                 axios
-                    .get("/admin/clientes/" + this.orden_venta.cliente_id)
+                    .get("/admin/clientes/" + this.venta.cliente_id)
                     .then((response) => {
                         this.oCliente = response.data.cliente;
                         if (this.accion != "edit") {
-                            this.orden_venta.nit = this.oCliente.ci;
+                            this.venta.nit = this.oCliente.ci;
                         }
                     });
             } else {
@@ -579,11 +572,7 @@ export default {
         getProducto() {
             if (this.producto_id != "") {
                 axios
-                    .get("/admin/productos/" + this.producto_id, {
-                        params: {
-                            id: this.orden_venta.sucursal_id,
-                        },
-                    })
+                    .get("/admin/productos/" + this.producto_id)
                     .then((response) => {
                         this.oProducto = response.data.producto;
                         this.oProducto["stock_actual"] =
@@ -598,14 +587,14 @@ export default {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/orden_ventas";
+                let url = "/admin/ventas";
                 if (this.accion == "edit") {
-                    url = "/admin/orden_ventas/" + this.orden_venta.id;
-                    this.orden_venta["_method"] = "PUT";
-                    this.orden_venta.eliminados = this.eliminados;
+                    url = "/admin/ventas/" + this.venta.id;
+                    this.venta["_method"] = "PUT";
+                    this.venta.eliminados = this.eliminados;
                 }
                 axios
-                    .post(url, this.orden_venta)
+                    .post(url, this.venta)
                     .then((res) => {
                         this.enviando = false;
                         if (res.data.sw) {
@@ -618,9 +607,9 @@ export default {
                             this.$emit("envioFormulario", res.data.id);
                             this.errors = [];
                             if (this.accion == "edit") {
-                                this.textoBtn = "Actualizar orden de venta";
+                                this.textoBtn = "Actualizar venta";
                             } else {
-                                this.textoBtn = "Registrar orden de venta";
+                                this.textoBtn = "Registrar venta";
                             }
                         } else {
                             Swal.fire({
@@ -635,9 +624,9 @@ export default {
                     .catch((error) => {
                         this.enviando = false;
                         if (this.accion == "edit") {
-                            this.textoBtn = "Actualizar orden de venta";
+                            this.textoBtn = "Actualizar venta";
                         } else {
-                            this.textoBtn = "Registrar orden de venta";
+                            this.textoBtn = "Registrar venta";
                         }
                         if (error.response) {
                             if (error.response.status === 422) {
@@ -691,10 +680,10 @@ export default {
             return `${year}-${month}-${day}`;
         },
         iniciaSeleccionFilas() {
-            $(".detalle_ordens").on("focusin", "input", function () {
+            $(".detalle_ventas").on("focusin", "input", function () {
                 $(this).parents("tr").addClass("seleccionado");
             });
-            $(".detalle_ordens").on("focusout", "input", function () {
+            $(".detalle_ventas").on("focusout", "input", function () {
                 $(this).parents("tr").removeClass("seleccionado");
             });
         },
@@ -710,7 +699,7 @@ export default {
         getProductosQuery(query) {
             if (query !== "") {
                 axios
-                    .get("/admin/productos/productos_sucursal", {
+                    .get("/admin/productos/buscar_producto", {
                         params: {
                             value: query,
                             sw_busqueda: this.sw_busqueda,
@@ -733,7 +722,7 @@ export default {
             };
             axios
                 .post(
-                    "/admin/orden_ventas/pdf/" + this.orden_venta.id,
+                    "/admin/ventas/pdf/" + this.venta.id,
                     null,
                     config
                 )
@@ -770,30 +759,20 @@ export default {
                     if (response.data.sw) {
                         let subtotal = 0;
                         let precio = 0;
-                        if (this.venta_mayor == "SI") {
-                            precio = response.data.producto.precio_mayor;
-                            subtotal =
-                                parseFloat(this.cantidad) * parseFloat(precio);
-                        } else {
-                            precio = response.data.producto.precio;
-                            subtotal =
-                                parseFloat(this.cantidad) * parseFloat(precio);
-                        }
-
-                        this.orden_venta.detalle_ordens.push({
+                        precio = response.data.producto.precio;
+                        subtotal =
+                            parseFloat(this.cantidad) * parseFloat(precio);
+                        this.venta.detalle_ventas.push({
                             id: 0,
-                            orden_id: 0,
+                            venta_id: 0,
                             producto_id: response.data.producto.id,
-                            sucursal_stock_id: response.data.sucursal_stock.id,
                             cantidad: this.cantidad,
-                            venta_mayor: this.venta_mayor,
                             precio: precio,
                             subtotal: subtotal.toFixed(2),
                             producto: response.data.producto,
                         });
                         this.sumaTotalVenta();
                         this.producto_id = "";
-                        this.venta_mayor = "NO";
                         this.oProducto = null;
                         this.cantidad = 1;
                     } else {
@@ -811,31 +790,31 @@ export default {
             let suma_total = 0;
             let precio = 0;
             let subtotal = 0;
-            this.orden_venta.detalle_ordens.forEach((elem) => {
+            this.venta.detalle_ventas.forEach((elem) => {
                 suma_total += parseFloat(elem.subtotal);
             });
-            this.orden_venta.total = suma_total.toFixed(2);
+            this.venta.total = suma_total.toFixed(2);
 
             // agrega descuento
-            if (this.orden_venta.descuento != "") {
+            if (this.venta.descuento != "") {
                 if (
-                    parseFloat(this.orden_venta.descuento) >= 0 &&
-                    parseFloat(this.orden_venta.descuento) <= 100
+                    parseFloat(this.venta.descuento) >= 0 &&
+                    parseFloat(this.venta.descuento) <= 100
                 ) {
                     let p_descuento =
                         parseFloat(
-                            this.orden_venta.descuento != ""
-                                ? this.orden_venta.descuento
+                            this.venta.descuento != ""
+                                ? this.venta.descuento
                                 : 0
                         ) / 100;
                     let descuento =
-                        parseFloat(this.orden_venta.total) * p_descuento;
-                    this.orden_venta.total_final = parseFloat(
-                        parseFloat(this.orden_venta.total) - descuento
+                        parseFloat(this.venta.total) * p_descuento;
+                    this.venta.total_final = parseFloat(
+                        parseFloat(this.venta.total) - descuento
                     ).toFixed(2);
                 } else {
-                    this.orden_venta.descuento = 0;
-                    this.orden_venta.total_final = this.orden_venta.total;
+                    this.venta.descuento = 0;
+                    this.venta.total_final = this.venta.total;
                     Swal.fire({
                         icon: "info",
                         title: "ATENCIÓN",
@@ -850,7 +829,7 @@ export default {
             if (id) {
                 this.eliminados.push(id);
             }
-            this.orden_venta.detalle_ordens.splice(index, 1);
+            this.venta.detalle_ventas.splice(index, 1);
             this.sumaTotalVenta();
         },
         abreModal(tipo_accion = "nuevo") {
@@ -871,12 +850,12 @@ export default {
 </script>
 
 <style>
-.detalle_ordens tbody tr td {
+.detalle_ventas tbody tr td {
     padding: 0px;
     vertical-align: middle;
 }
 
-.detalle_ordens tbody tr td:nth-child(1) {
+.detalle_ventas tbody tr td:nth-child(1) {
     padding-left: 5px;
 }
 

@@ -137,6 +137,26 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
+                                        'text-danger': errors.correo,
+                                    }"
+                                    >Correo electrónico</label
+                                >
+                                <el-input
+                                    placeholder="Correo electrónico"
+                                    :class="{ 'is-invalid': errors.correo }"
+                                    v-model="cliente.correo"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.correo"
+                                    v-text="errors.correo[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
                                         'text-danger': errors.dir,
                                     }"
                                     >Dirección</label
@@ -200,6 +220,7 @@ export default {
                 nit: "",
                 fono_array: [],
                 fono: "",
+                correo: "",
                 dir: "",
             },
         },
@@ -286,6 +307,10 @@ export default {
                         : ""
                 );
                 formdata.append(
+                    "correo",
+                    this.cliente.correo ? this.cliente.correo : ""
+                );
+                formdata.append(
                     "dir",
                     this.cliente.dir ? this.cliente.dir : ""
                 );
@@ -358,6 +383,7 @@ export default {
             this.cliente.ci_exp = "";
             this.cliente.nit = "";
             this.cliente.fono = [];
+            this.cliente.correo = "";
             this.cliente.dir = "";
         },
     },

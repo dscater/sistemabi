@@ -141,15 +141,13 @@
                                     }"
                                     >Correo electrónico</label
                                 >
-                                <b-form-tags
-                                    input-id="tags-basic"
+                                <el-input
                                     placeholder="Correo electrónico"
                                     :class="{ 'is-invalid': errors.correo }"
                                     v-model="cliente.correo"
-                                    addButtonText="Añadir"
-                                    separator=" ,;"
-                                    remove-on-delete
-                                ></b-form-tags>
+                                    clearable
+                                >
+                                </el-input>
                                 <span
                                     class="error invalid-feedback"
                                     v-if="errors.correo"
@@ -221,6 +219,7 @@ export default {
                 ci_exp: "",
                 nit: "",
                 fono: [],
+                correo: "",
                 dir: "",
             },
         },
@@ -315,6 +314,10 @@ export default {
                     this.cliente.fono ? this.cliente.fono.join("; ") : ""
                 );
                 formdata.append(
+                    "correo",
+                    this.cliente.correo ? this.cliente.correo : ""
+                );
+                formdata.append(
                     "dir",
                     this.cliente.dir ? this.cliente.dir : ""
                 );
@@ -387,6 +390,7 @@ export default {
             this.cliente.ci_exp = "";
             this.cliente.nit = "";
             this.cliente.fono = [];
+            this.cliente.correo = "";
             this.cliente.dir = "";
         },
     },
