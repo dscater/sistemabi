@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 24-04-2023 a las 21:49:11
+-- Tiempo de generación: 26-04-2023 a las 20:48:29
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -34,11 +34,21 @@ CREATE TABLE `clientes` (
   `ci_exp` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nit` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dir` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nombre`, `ci`, `ci_exp`, `nit`, `fono`, `correo`, `dir`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'PEDRO MARTINEZ', '231231', 'LP', '', '', NULL, '', '2023-04-26', '2023-04-26 20:00:10', '2023-04-26 20:00:10'),
+(2, 'MARIA GONZALES CASAS', '1231231', 'CB', '34324111', '666666; 7777777', 'MARIA@GMAIL.COM', 'LOS OLIVOS', '2023-04-26', '2023-04-26 20:05:20', '2023-04-26 20:05:50'),
+(3, 'PABLO SANCHEZ', '43434', 'CB', '111111', '', '', '', '2023-04-26', '2023-04-26 20:07:17', '2023-04-26 20:07:17');
 
 -- --------------------------------------------------------
 
@@ -73,21 +83,26 @@ INSERT INTO `configuracions` (`id`, `nombre_sistema`, `alias`, `razon_social`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_ordens`
+-- Estructura de tabla para la tabla `detalle_ventas`
 --
 
-CREATE TABLE `detalle_ordens` (
+CREATE TABLE `detalle_ventas` (
   `id` bigint UNSIGNED NOT NULL,
-  `orden_id` bigint UNSIGNED NOT NULL,
+  `venta_id` bigint UNSIGNED NOT NULL,
   `producto_id` bigint UNSIGNED NOT NULL,
-  `sucursal_stock_id` bigint UNSIGNED NOT NULL,
-  `cantidad` int NOT NULL,
-  `venta_mayor` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cantidad` double NOT NULL,
   `precio` decimal(24,2) NOT NULL,
   `subtotal` decimal(24,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_ventas`
+--
+
+INSERT INTO `detalle_ventas` (`id`, `venta_id`, `producto_id`, `cantidad`, `precio`, `subtotal`, `created_at`, `updated_at`) VALUES
+(5, 3, 1, 10, 20.00, 200.00, '2023-04-26 20:47:35', '2023-04-26 20:47:35');
 
 -- --------------------------------------------------------
 
@@ -129,7 +144,47 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (13, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PRODUCTO', 'id: 6<br/>codigo_almacen: AS<br/>codigo_producto: DASD<br/>nombre: ASD<br/>descripcion: AS<br/>precio: 12<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372843_6.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:23<br/>updated_at: 2023-04-24 17:47:23<br/>', NULL, 'PRODUCTOS', '2023-04-24', '17:47:23', '2023-04-24 21:47:23', '2023-04-24 21:47:23'),
 (14, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN PRODUCTO', 'id: 6<br/>codigo_almacen: AS<br/>codigo_producto: DASD<br/>nombre: ASD<br/>descripcion: AS<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372843_6.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:23<br/>updated_at: 2023-04-24 17:47:23<br/>', 'id: 6<br/>codigo_almacen: AS<br/>codigo_producto: DASD<br/>nombre: ASD<br/>descripcion: AS<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372848_6.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:23<br/>updated_at: 2023-04-24 17:47:28<br/>', 'PRODUCTOS', '2023-04-24', '17:47:28', '2023-04-24 21:47:28', '2023-04-24 21:47:28'),
 (15, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PRODUCTO', 'id: 7<br/>codigo_almacen: ASD<br/>codigo_producto: ASD<br/>nombre: ASD<br/>descripcion: ASD<br/>precio: 12<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372874_7.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:54<br/>updated_at: 2023-04-24 17:47:54<br/>', NULL, 'PRODUCTOS', '2023-04-24', '17:47:54', '2023-04-24 21:47:54', '2023-04-24 21:47:54'),
-(16, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN PRODUCTO', 'id: 7<br/>codigo_almacen: ASD<br/>codigo_producto: ASD<br/>nombre: ASD<br/>descripcion: ASD<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372874_7.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:54<br/>updated_at: 2023-04-24 17:47:54<br/>', 'id: 7<br/>codigo_almacen: ASD<br/>codigo_producto: ASD<br/>nombre: ASD<br/>descripcion: ASD<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372879_7.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:54<br/>updated_at: 2023-04-24 17:47:59<br/>', 'PRODUCTOS', '2023-04-24', '17:47:59', '2023-04-24 21:47:59', '2023-04-24 21:47:59');
+(16, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN PRODUCTO', 'id: 7<br/>codigo_almacen: ASD<br/>codigo_producto: ASD<br/>nombre: ASD<br/>descripcion: ASD<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372874_7.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:54<br/>updated_at: 2023-04-24 17:47:54<br/>', 'id: 7<br/>codigo_almacen: ASD<br/>codigo_producto: ASD<br/>nombre: ASD<br/>descripcion: ASD<br/>precio: 12.00<br/>stock_min: 12<br/>stock_actual: 0<br/>imagen: 1682372879_7.jpg<br/>fecha_registro: 2023-04-24<br/>created_at: 2023-04-24 17:47:54<br/>updated_at: 2023-04-24 17:47:59<br/>', 'PRODUCTOS', '2023-04-24', '17:47:59', '2023-04-24 21:47:59', '2023-04-24 21:47:59'),
+(17, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE INGRESO', 'created_at: 2023-04-25 10:37:56<br/>descripcion: <br/>id: 2<br/>nombre: TIPO INGRESO 2<br/>updated_at: 2023-04-25 10:37:56<br/>', NULL, 'TIPO DE INGRESOS', '2023-04-25', '10:37:57', '2023-04-25 14:37:57', '2023-04-25 14:37:57'),
+(18, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN TIPO DE INGRESO', 'created_at: 2023-04-25 10:37:56<br/>descripcion: <br/>id: 2<br/>nombre: TIPO INGRESO 2<br/>updated_at: 2023-04-25 10:37:56<br/>', 'created_at: 2023-04-25 10:37:56<br/>descripcion: ASD<br/>id: 2<br/>nombre: TIPO INGRESO 2<br/>updated_at: 2023-04-25 10:38:00<br/>', 'TIPO DE INGRESOS', '2023-04-25', '10:38:00', '2023-04-25 14:38:00', '2023-04-25 14:38:00'),
+(19, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN TIPO DE INGRESO', 'created_at: 2023-04-25 10:37:56<br/>descripcion: ASD<br/>id: 2<br/>nombre: TIPO INGRESO 2<br/>updated_at: 2023-04-25 10:38:00<br/>', 'created_at: 2023-04-25 10:37:56<br/>descripcion: <br/>id: 2<br/>nombre: TIPO INGRESO 2<br/>updated_at: 2023-04-25 10:38:04<br/>', 'TIPO DE INGRESOS', '2023-04-25', '10:38:04', '2023-04-25 14:38:04', '2023-04-25 14:38:04'),
+(20, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE INGRESO', 'created_at: 2023-04-25 10:38:08<br/>descripcion: ASD<br/>id: 3<br/>nombre: ASD<br/>updated_at: 2023-04-25 10:38:08<br/>', NULL, 'TIPO DE INGRESOS', '2023-04-25', '10:38:08', '2023-04-25 14:38:08', '2023-04-25 14:38:08'),
+(21, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN TIPO DE INGRESO', 'created_at: 2023-04-25 10:38:08<br/>descripcion: ASD<br/>id: 3<br/>nombre: ASD<br/>updated_at: 2023-04-25 10:38:08<br/>', NULL, 'TIPO DE INGRESOS', '2023-04-25', '10:38:10', '2023-04-25 14:38:10', '2023-04-25 14:38:10'),
+(22, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:16<br/>descripcion: <br/>id: 1<br/>nombre: SALIDA 1<br/>updated_at: 2023-04-25 10:38:16<br/>', NULL, 'TIPO DE SALIDAS', '2023-04-25', '10:38:16', '2023-04-25 14:38:16', '2023-04-25 14:38:16'),
+(23, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:21<br/>descripcion: <br/>id: 2<br/>nombre: TIPO DE SALIDA 2<br/>updated_at: 2023-04-25 10:38:21<br/>', NULL, 'TIPO DE SALIDAS', '2023-04-25', '10:38:21', '2023-04-25 14:38:21', '2023-04-25 14:38:21'),
+(24, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:21<br/>descripcion: <br/>id: 2<br/>nombre: TIPO DE SALIDA 2<br/>updated_at: 2023-04-25 10:38:21<br/>', 'created_at: 2023-04-25 10:38:21<br/>descripcion: ASD<br/>id: 2<br/>nombre: TIPO DE SALIDA 2<br/>updated_at: 2023-04-25 10:38:23<br/>', 'TIPO DE SALIDAS', '2023-04-25', '10:38:23', '2023-04-25 14:38:23', '2023-04-25 14:38:23'),
+(25, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:27<br/>descripcion: ASD<br/>id: 3<br/>nombre: ASD<br/>updated_at: 2023-04-25 10:38:27<br/>', NULL, 'TIPO DE SALIDAS', '2023-04-25', '10:38:27', '2023-04-25 14:38:27', '2023-04-25 14:38:27'),
+(26, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:27<br/>descripcion: ASD<br/>id: 3<br/>nombre: ASD<br/>updated_at: 2023-04-25 10:38:27<br/>', NULL, 'TIPO DE SALIDAS', '2023-04-25', '10:38:31', '2023-04-25 14:38:31', '2023-04-25 14:38:31'),
+(27, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN TIPO DE SALIDA', 'created_at: 2023-04-25 10:38:21<br/>descripcion: ASD<br/>id: 2<br/>nombre: TIPO DE SALIDA 2<br/>updated_at: 2023-04-25 10:38:23<br/>', 'created_at: 2023-04-25 10:38:21<br/>descripcion: <br/>id: 2<br/>nombre: TIPO DE SALIDA 2<br/>updated_at: 2023-04-25 10:38:35<br/>', 'TIPO DE SALIDAS', '2023-04-25', '10:38:35', '2023-04-25 14:38:35', '2023-04-25 14:38:35'),
+(28, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN INGRESO DE PRODUCTO', 'cantidad: 100<br/>created_at: 2023-04-25 11:23:41<br/>descripcion: <br/>fecha_caducidad: 2025-02-02<br/>fecha_fabricacion: 2023-02-02<br/>fecha_registro: 2023-04-25<br/>id: 1<br/>lote: 1<br/>precio_compra: 20<br/>producto_id: 1<br/>proveedor_id: 1<br/>tipo_ingreso_id: 1<br/>updated_at: 2023-04-25 11:23:41<br/>', NULL, 'INGRESO DE PRODUCTOS', '2023-04-25', '11:23:41', '2023-04-25 15:23:41', '2023-04-25 15:23:41'),
+(29, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN INGRESO DE PRODUCTO', 'cantidad: 100<br/>created_at: 2023-04-25 11:25:58<br/>descripcion: <br/>fecha_caducidad: 2024-04-25<br/>fecha_fabricacion: 2023-04-25<br/>fecha_registro: 2023-04-25<br/>id: 2<br/>lote: 2<br/>precio_compra: 30<br/>producto_id: 2<br/>proveedor_id: 1<br/>tipo_ingreso_id: 2<br/>updated_at: 2023-04-25 11:25:58<br/>', NULL, 'INGRESO DE PRODUCTOS', '2023-04-25', '11:25:58', '2023-04-25 15:25:58', '2023-04-25 15:25:58'),
+(30, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN INGRESO DE PRODUCTO', 'cantidad: 50<br/>created_at: 2023-04-25 11:28:29<br/>descripcion: <br/>fecha_caducidad: 2026-03-03<br/>fecha_fabricacion: 2023-03-03<br/>fecha_registro: 2023-04-25<br/>id: 3<br/>lote: 3<br/>precio_compra: 100<br/>producto_id: 3<br/>proveedor_id: 1<br/>tipo_ingreso_id: 1<br/>updated_at: 2023-04-25 11:28:29<br/>', NULL, 'INGRESO DE PRODUCTOS', '2023-04-25', '11:28:30', '2023-04-25 15:28:30', '2023-04-25 15:28:30'),
+(31, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN INGRESO DE PRODUCTO', 'cantidad: 50<br/>created_at: 2023-04-25 11:28:29<br/>descripcion: <br/>fecha_caducidad: 2026-03-03<br/>fecha_fabricacion: 2023-03-03<br/>fecha_registro: 2023-04-25<br/>id: 3<br/>lote: 3<br/>precio_compra: 100.00<br/>producto_id: 3<br/>proveedor_id: 1<br/>tipo_ingreso_id: 1<br/>updated_at: 2023-04-25 11:28:29<br/>', 'cantidad: 70<br/>created_at: 2023-04-25 11:28:29<br/>descripcion: <br/>fecha_caducidad: 2026-03-03<br/>fecha_fabricacion: 2023-03-03<br/>fecha_registro: 2023-04-25<br/>id: 3<br/>lote: 3<br/>precio_compra: 100.00<br/>producto_id: 3<br/>proveedor_id: 1<br/>tipo_ingreso_id: 1<br/>updated_at: 2023-04-25 11:31:20<br/>', 'INGRESO DE PRODUCTOS', '2023-04-25', '11:31:20', '2023-04-25 15:31:20', '2023-04-25 15:31:20'),
+(32, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SALIDA DE PRODUCTO', 'cantidad: 1<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:43:36<br/>', NULL, 'SALIDA DE PRODUCTOS', '2023-04-25', '15:43:36', '2023-04-25 19:43:36', '2023-04-25 19:43:36'),
+(33, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SALIDA DE PRODUCTO', 'cantidad: 1<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:43:36<br/>', 'cantidad: 5<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:43:51<br/>', 'SALIDA DE PRODUCTOS', '2023-04-25', '15:43:51', '2023-04-25 19:43:51', '2023-04-25 19:43:51'),
+(34, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SALIDA DE PRODUCTO', 'cantidad: 5<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:43:51<br/>', 'cantidad: 2<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:45:43<br/>', 'SALIDA DE PRODUCTOS', '2023-04-25', '15:45:43', '2023-04-25 19:45:43', '2023-04-25 19:45:43'),
+(35, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SALIDA DE PRODUCTO', 'cantidad: 1<br/>created_at: 2023-04-25 15:46:09<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 2<br/>producto_id: 1<br/>tipo_salida_id: 2<br/>updated_at: 2023-04-25 15:46:09<br/>', NULL, 'SALIDA DE PRODUCTOS', '2023-04-25', '15:46:09', '2023-04-25 19:46:09', '2023-04-25 19:46:09'),
+(36, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SALIDA DE PRODUCTO', 'cantidad: 2<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:45:43<br/>', 'cantidad: 2<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-24<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:46:12<br/>', 'SALIDA DE PRODUCTOS', '2023-04-25', '15:46:12', '2023-04-25 19:46:12', '2023-04-25 19:46:12'),
+(37, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SALIDA DE PRODUCTO', 'cantidad: 2<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-24<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:46:12<br/>', 'cantidad: 1<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-24<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:46:26<br/>', 'SALIDA DE PRODUCTOS', '2023-04-25', '15:46:26', '2023-04-25 19:46:26', '2023-04-25 19:46:26'),
+(38, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UNA SALIDA DE PRODUCTO', 'cantidad: 1<br/>created_at: 2023-04-25 15:46:09<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 2<br/>producto_id: 1<br/>tipo_salida_id: 2<br/>updated_at: 2023-04-25 15:46:09<br/>', NULL, 'SALIDA DE PRODUCTOS', '2023-04-25', '15:46:51', '2023-04-25 19:46:51', '2023-04-25 19:46:51'),
+(39, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA SALIDA DE PRODUCTO', 'cantidad: 2<br/>created_at: 2023-04-25 15:47:12<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 3<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:47:12<br/>', NULL, 'SALIDA DE PRODUCTOS', '2023-04-25', '15:47:12', '2023-04-25 19:47:12', '2023-04-25 19:47:12'),
+(40, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UNA SALIDA DE PRODUCTO', 'cantidad: 1<br/>created_at: 2023-04-25 15:43:36<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-24<br/>id: 1<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:46:26<br/>', NULL, 'SALIDA DE PRODUCTOS', '2023-04-25', '15:47:17', '2023-04-25 19:47:17', '2023-04-25 19:47:17'),
+(41, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', 'ci: 231231<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-26 16:00:10<br/>dir: <br/>fecha_registro: 2023-04-26<br/>fono: <br/>id: 1<br/>nit: <br/>nombre: PEDRO MARTINEZ<br/>updated_at: 2023-04-26 16:00:10<br/>', NULL, 'CLIENTES', '2023-04-26', '16:00:10', '2023-04-26 20:00:10', '2023-04-26 20:00:10'),
+(42, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777; 22222<br/>id: 2<br/>nit: 34324242<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:20<br/>', NULL, 'CLIENTES', '2023-04-26', '16:05:20', '2023-04-26 20:05:20', '2023-04-26 20:05:20'),
+(43, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777; 22222<br/>id: 2<br/>nit: 34324242<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:20<br/>', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324242<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:32<br/>', 'CLIENTES', '2023-04-26', '16:05:32', '2023-04-26 20:05:32', '2023-04-26 20:05:32'),
+(44, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324242<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:32<br/>', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:38<br/>', 'CLIENTES', '2023-04-26', '16:05:38', '2023-04-26 20:05:38', '2023-04-26 20:05:38'),
+(45, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES<br/>updated_at: 2023-04-26 16:05:38<br/>', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES MAMANI<br/>updated_at: 2023-04-26 16:05:42<br/>', 'CLIENTES', '2023-04-26', '16:05:42', '2023-04-26 20:05:42', '2023-04-26 20:05:42'),
+(46, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'ci: 1231231<br/>ci_exp: LP<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES MAMANI<br/>updated_at: 2023-04-26 16:05:42<br/>', 'ci: 1231231<br/>ci_exp: CB<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES MAMANI<br/>updated_at: 2023-04-26 16:05:45<br/>', 'CLIENTES', '2023-04-26', '16:05:45', '2023-04-26 20:05:45', '2023-04-26 20:05:45'),
+(47, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN CLIENTE', 'ci: 1231231<br/>ci_exp: CB<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES MAMANI<br/>updated_at: 2023-04-26 16:05:45<br/>', 'ci: 1231231<br/>ci_exp: CB<br/>correo: MARIA@GMAIL.COM<br/>created_at: 2023-04-26 16:05:20<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666; 7777777<br/>id: 2<br/>nit: 34324111<br/>nombre: MARIA GONZALES CASAS<br/>updated_at: 2023-04-26 16:05:50<br/>', 'CLIENTES', '2023-04-26', '16:05:50', '2023-04-26 20:05:50', '2023-04-26 20:05:50'),
+(48, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN CLIENTE', 'ci: 43434<br/>ci_exp: CB<br/>correo: <br/>created_at: 2023-04-26 16:07:17<br/>dir: <br/>fecha_registro: 2023-04-26<br/>fono: <br/>id: 3<br/>nit: 111111<br/>nombre: PABLO SANCHEZ<br/>updated_at: 2023-04-26 16:07:17<br/>', NULL, 'CLIENTES', '2023-04-26', '16:07:17', '2023-04-26 20:07:17', '2023-04-26 20:07:17'),
+(49, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA ORDEN DE VENTA', '', NULL, 'ORDEN DE VENTA', '2023-04-26', '16:29:21', '2023-04-26 20:29:21', '2023-04-26 20:29:21'),
+(50, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UNA ORDEN DE VENTA', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 310.00<br/>total_final: 279.00<br/>updated_at: 2023-04-26 16:37:59<br/>user_id: 1<br/>', NULL, 'ORDEN DE VENTA', '2023-04-26', '16:37:59', '2023-04-26 20:37:59', '2023-04-26 20:37:59'),
+(51, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA ORDEN DE VENTA', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 310.00<br/>total_final: 279.00<br/>updated_at: 2023-04-26 16:37:59<br/>user_id: 1<br/>', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 330.00<br/>total_final: 297.00<br/>updated_at: 2023-04-26 16:43:06<br/>user_id: 1<br/>', 'ORDEN DE VENTA', '2023-04-26', '16:43:06', '2023-04-26 20:43:06', '2023-04-26 20:43:06'),
+(52, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA ORDEN DE VENTA', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 330.00<br/>total_final: 297.00<br/>updated_at: 2023-04-26 16:43:06<br/>user_id: 1<br/>', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 310.00<br/>total_final: 279.00<br/>updated_at: 2023-04-26 16:43:28<br/>user_id: 1<br/>', 'ORDEN DE VENTA', '2023-04-26', '16:43:28', '2023-04-26 20:43:28', '2023-04-26 20:43:28'),
+(53, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UNA ORDEN DE VENTA', 'cliente_id: 2<br/>created_at: 2023-04-26 16:37:59<br/>descuento: 10<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 4<br/>nit: 1231231<br/>total: 310.00<br/>total_final: 279.00<br/>updated_at: 2023-04-26 16:43:28<br/>user_id: 1<br/>', NULL, 'ORDEN DE VENTA', '2023-04-26', '16:45:18', '2023-04-26 20:45:18', '2023-04-26 20:45:18'),
+(54, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA SALIDA DE PRODUCTO', 'cantidad: 2<br/>created_at: 2023-04-25 15:47:12<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 3<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-25 15:47:12<br/>', 'cantidad: 3<br/>created_at: 2023-04-25 15:47:12<br/>descripcion: <br/>fecha_registro: 2023-04-25<br/>fecha_salida: 2023-04-25<br/>id: 3<br/>producto_id: 1<br/>tipo_salida_id: 1<br/>updated_at: 2023-04-26 16:46:46<br/>', 'SALIDA DE PRODUCTOS', '2023-04-26', '16:46:46', '2023-04-26 20:46:46', '2023-04-26 20:46:46'),
+(55, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA ORDEN DE VENTA', 'cliente_id: 1<br/>created_at: 2023-04-26 16:29:21<br/>descuento: 0<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 3<br/>nit: 231231<br/>total: 80.00<br/>total_final: 80.00<br/>updated_at: 2023-04-26 16:29:21<br/>user_id: 1<br/>', 'cliente_id: 1<br/>created_at: 2023-04-26 16:29:21<br/>descuento: 0<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 3<br/>nit: 231231<br/>total: 0.00<br/>total_final: 80.00<br/>updated_at: 2023-04-26 16:47:13<br/>user_id: 1<br/>', 'ORDEN DE VENTA', '2023-04-26', '16:47:13', '2023-04-26 20:47:13', '2023-04-26 20:47:13'),
+(56, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UNA ORDEN DE VENTA', 'cliente_id: 1<br/>created_at: 2023-04-26 16:29:21<br/>descuento: 0<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 3<br/>nit: 231231<br/>total: 0.00<br/>total_final: 80.00<br/>updated_at: 2023-04-26 16:47:13<br/>user_id: 1<br/>', 'cliente_id: 1<br/>created_at: 2023-04-26 16:29:21<br/>descuento: 0<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-26<br/>id: 3<br/>nit: 231231<br/>total: 200.00<br/>total_final: 80.00<br/>updated_at: 2023-04-26 16:47:35<br/>user_id: 1<br/>', 'ORDEN DE VENTA', '2023-04-26', '16:47:35', '2023-04-26 20:47:35', '2023-04-26 20:47:35');
 
 -- --------------------------------------------------------
 
@@ -139,17 +194,28 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 
 CREATE TABLE `ingreso_productos` (
   `id` bigint UNSIGNED NOT NULL,
-  `lugar` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `producto_id` bigint UNSIGNED NOT NULL,
   `proveedor_id` bigint UNSIGNED NOT NULL,
   `precio_compra` decimal(8,2) NOT NULL,
-  `cantidad` int NOT NULL,
+  `cantidad` double NOT NULL,
+  `lote` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_fabricacion` date NOT NULL,
+  `fecha_caducidad` date NOT NULL,
   `tipo_ingreso_id` bigint UNSIGNED NOT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `ingreso_productos`
+--
+
+INSERT INTO `ingreso_productos` (`id`, `producto_id`, `proveedor_id`, `precio_compra`, `cantidad`, `lote`, `fecha_fabricacion`, `fecha_caducidad`, `tipo_ingreso_id`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 20.00, 100, '1', '2023-02-02', '2025-02-02', 1, '', '2023-04-25', '2023-04-25 15:23:41', '2023-04-25 15:23:41'),
+(2, 2, 1, 30.00, 100, '2', '2023-04-25', '2024-04-25', 2, '', '2023-04-25', '2023-04-25 15:25:58', '2023-04-25 15:25:58'),
+(3, 3, 1, 100.00, 70, '3', '2023-03-03', '2026-03-03', 1, '', '2023-04-25', '2023-04-25 15:28:29', '2023-04-25 15:31:20');
 
 -- --------------------------------------------------------
 
@@ -177,6 +243,17 @@ CREATE TABLE `kardex_productos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `kardex_productos`
+--
+
+INSERT INTO `kardex_productos` (`id`, `lugar`, `tipo_registro`, `registro_id`, `producto_id`, `detalle`, `precio`, `tipo_is`, `cantidad_ingreso`, `cantidad_salida`, `cantidad_saldo`, `cu`, `monto_ingreso`, `monto_salida`, `monto_saldo`, `fecha`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'INGRESO', 1, 1, 'VALOR INICIAL', 20.00, 'INGRESO', 100, NULL, 100, 20.00, 2000.00, NULL, 2000.00, '2023-04-25', '2023-04-25 15:23:41', '2023-04-25 19:47:17'),
+(2, NULL, 'INGRESO', 2, 2, 'VALOR INICIAL', 35.00, 'INGRESO', 100, NULL, 100, 35.00, 3500.00, NULL, 3500.00, '2023-04-25', '2023-04-25 15:25:58', '2023-04-26 20:45:18'),
+(3, NULL, 'INGRESO', 3, 3, 'VALOR INICIAL', 100.00, 'INGRESO', 70, NULL, 70, 100.00, 7000.00, NULL, 7000.00, '2023-04-25', '2023-04-25 15:28:29', '2023-04-26 20:45:18'),
+(6, NULL, 'SALIDA', 3, 1, 'SALIDA DE PRODUCTO', 20.00, 'EGRESO', NULL, 3, 97, 20.00, NULL, 60.00, 1940.00, '2023-04-25', '2023-04-25 19:47:12', '2023-04-26 20:47:13'),
+(11, NULL, 'VENTA', 5, 1, 'VENTA DE PRODUCTO', 20.00, 'EGRESO', NULL, 10, 87, 20.00, NULL, 200.00, 1740.00, '2023-04-26', '2023-04-26 20:47:35', '2023-04-26 20:47:35');
 
 -- --------------------------------------------------------
 
@@ -234,9 +311,9 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `codigo_almacen`, `codigo_producto`, `nombre`, `descripcion`, `precio`, `stock_min`, `stock_actual`, `imagen`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 'A001', 'P001', 'PASTILLAS A', '', 20.00, 10, 0, NULL, '2023-04-24', '2023-04-24 21:36:20', '2023-04-24 21:36:20'),
-(2, 'A001', 'P002', 'GEL ANTIBACTERIAL', '', 35.00, 5, 0, NULL, '2023-04-24', '2023-04-24 21:44:24', '2023-04-24 21:44:24'),
-(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 0, NULL, '2023-04-24', '2023-04-24 21:45:17', '2023-04-24 21:45:17'),
+(1, 'A001', 'P001', 'PASTILLAS A', '', 20.00, 10, 87, NULL, '2023-04-24', '2023-04-24 21:36:20', '2023-04-26 20:47:35'),
+(2, 'A001', 'P002', 'GEL ANTIBACTERIAL', '', 35.00, 5, 100, NULL, '2023-04-24', '2023-04-24 21:44:24', '2023-04-26 20:45:18'),
+(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 70, NULL, '2023-04-24', '2023-04-24 21:45:17', '2023-04-26 20:45:18'),
 (7, 'ASD', 'ASD', 'ASD', 'ASD', 12.00, 12, 0, '1682372879_7.jpg', '2023-04-24', '2023-04-24 21:47:54', '2023-04-24 21:47:59');
 
 -- --------------------------------------------------------
@@ -273,15 +350,22 @@ INSERT INTO `proveedors` (`id`, `razon_social`, `nit`, `dir`, `fono`, `nombre_co
 
 CREATE TABLE `salida_productos` (
   `id` bigint UNSIGNED NOT NULL,
-  `lugar` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `producto_id` bigint UNSIGNED NOT NULL,
   `cantidad` int NOT NULL,
+  `fecha_salida` date NOT NULL,
   `tipo_salida_id` bigint UNSIGNED NOT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `salida_productos`
+--
+
+INSERT INTO `salida_productos` (`id`, `producto_id`, `cantidad`, `fecha_salida`, `tipo_salida_id`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(3, 1, 3, '2023-04-25', 1, '', '2023-04-25', '2023-04-25 19:47:12', '2023-04-26 20:46:46');
 
 -- --------------------------------------------------------
 
@@ -302,7 +386,8 @@ CREATE TABLE `tipo_ingresos` (
 --
 
 INSERT INTO `tipo_ingresos` (`id`, `nombre`, `descripcion`, `created_at`, `updated_at`) VALUES
-(1, 'INGRESO TIPO 1', '', '2023-04-17 15:04:22', '2023-04-17 15:04:30');
+(1, 'INGRESO TIPO 1', '', '2023-04-17 15:04:22', '2023-04-17 15:04:30'),
+(2, 'TIPO INGRESO 2', '', '2023-04-25 14:37:56', '2023-04-25 14:38:04');
 
 -- --------------------------------------------------------
 
@@ -317,6 +402,14 @@ CREATE TABLE `tipo_salidas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_salidas`
+--
+
+INSERT INTO `tipo_salidas` (`id`, `nombre`, `descripcion`, `created_at`, `updated_at`) VALUES
+(1, 'SALIDA 1', '', '2023-04-25 14:38:16', '2023-04-25 14:38:16'),
+(2, 'TIPO DE SALIDA 2', '', '2023-04-25 14:38:21', '2023-04-25 14:38:35');
 
 -- --------------------------------------------------------
 
@@ -361,18 +454,23 @@ INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_
 CREATE TABLE `ventas` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `caja_id` bigint UNSIGNED NOT NULL,
   `cliente_id` bigint UNSIGNED NOT NULL,
   `nit` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `total` decimal(24,2) NOT NULL,
   `descuento` double(8,2) NOT NULL,
   `total_final` decimal(24,2) NOT NULL,
-  `tipo_venta` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `estado` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id`, `user_id`, `cliente_id`, `nit`, `total`, `descuento`, `total_final`, `estado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(3, 1, 1, '231231', 200.00, 0.00, 80.00, 'CANCELADO', '2023-04-26', '2023-04-26 20:29:21', '2023-04-26 20:47:35');
 
 --
 -- Índices para tablas volcadas
@@ -391,11 +489,11 @@ ALTER TABLE `configuracions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `detalle_ordens`
+-- Indices de la tabla `detalle_ventas`
 --
-ALTER TABLE `detalle_ordens`
+ALTER TABLE `detalle_ventas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `detalle_ordens_orden_id_foreign` (`orden_id`),
+  ADD KEY `detalle_ordens_orden_id_foreign` (`venta_id`),
   ADD KEY `detalle_ordens_producto_id_foreign` (`producto_id`);
 
 --
@@ -488,7 +586,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -497,28 +595,28 @@ ALTER TABLE `configuracions`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `detalle_ordens`
+-- AUTO_INCREMENT de la tabla `detalle_ventas`
 --
-ALTER TABLE `detalle_ordens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `detalle_ventas`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
 --
 ALTER TABLE `ingreso_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `kardex_productos`
 --
 ALTER TABLE `kardex_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -548,19 +646,19 @@ ALTER TABLE `proveedors`
 -- AUTO_INCREMENT de la tabla `salida_productos`
 --
 ALTER TABLE `salida_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_ingresos`
 --
 ALTER TABLE `tipo_ingresos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_salidas`
 --
 ALTER TABLE `tipo_salidas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -572,7 +670,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
