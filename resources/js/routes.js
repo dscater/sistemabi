@@ -116,6 +116,34 @@ export default new Router({
             props: true
         },
 
+        // Analisis inventarios
+        {
+            path: '/analisis_inventarios',
+            name: 'analisis_inventarios.index',
+            component: require('./components/modulos/analisis_inventarios/index.vue').default,
+        },
+
+        // Analisis proveedors
+        {
+            path: '/analisis_proveedors',
+            name: 'analisis_proveedors.index',
+            component: require('./components/modulos/analisis_proveedors/index.vue').default,
+        },
+
+        // Analisis ventas
+        {
+            path: '/analisis_ventas',
+            name: 'analisis_ventas.index',
+            component: require('./components/modulos/analisis_ventas/index.vue').default,
+        },
+
+        // Analisis clientes
+        {
+            path: '/analisis_clientes',
+            name: 'analisis_clientes.index',
+            component: require('./components/modulos/analisis_clientes/index.vue').default,
+        },
+
         // Reportes
         {
             path: '/reportes/usuarios',

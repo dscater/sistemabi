@@ -83,84 +83,30 @@
                         MENÚ ANÁLISIS BI
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <router-link :to="{name:'analisis_inventarios.index'}" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Inventario
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a
-                                    href="pages/layout/top-nav.html"
-                                    class="nav-link"
-                                >
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation</p>
-                                </a>
-                            </li>
-                        </ul>
+                            <p>Inventario</p>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <router-link :to="{name:'analisis_proveedors.index'}" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Proveedores
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a
-                                    href="pages/layout/top-nav.html"
-                                    class="nav-link"
-                                >
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation</p>
-                                </a>
-                            </li>
-                        </ul>
+                            <p>Proveedores</p>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <router-link :to="{name:'analisis_ventas.index'}" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>
                                 Ventas
-                                <i class="fas fa-angle-left right"></i>
                             </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a
-                                    href="pages/layout/top-nav.html"
-                                    class="nav-link"
-                                >
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation</p>
-                                </a>
-                            </li>
-                        </ul>
+                        </router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <router-link :to="{name:'analisis_clientes.index'}" class="nav-link">
                             <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Clientes
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a
-                                    href="pages/layout/top-nav.html"
-                                    class="nav-link"
-                                >
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation</p>
-                                </a>
-                            </li>
-                        </ul>
+                            <p>Clientes</p>
+                        </router-link>
                     </li>
                     <li
                         class="nav-header bg-navy"

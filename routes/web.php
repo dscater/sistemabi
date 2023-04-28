@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalisisBiController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\HistorialAccionController;
@@ -92,6 +93,23 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('historial_accions', HistorialAccionController::class)->only([
             'index', 'show'
         ]);
+
+        // Analisis BI
+        Route::get("analisis_bi/stock_productos1", [AnalisisBiController::class, 'stock_productos1']);
+        Route::get("analisis_bi/stock_productos2", [AnalisisBiController::class, 'stock_productos2']);
+        Route::get("analisis_bi/stock_productos3", [AnalisisBiController::class, 'stock_productos3']);
+        
+        Route::get("analisis_bi/proveedors1", [AnalisisBiController::class, 'proveedors1']);
+        Route::get("analisis_bi/proveedors2", [AnalisisBiController::class, 'proveedors2']);
+        Route::get("analisis_bi/proveedors3", [AnalisisBiController::class, 'proveedors3']);
+        
+        Route::get("analisis_bi/ventas1", [AnalisisBiController::class, 'ventas1']);
+        Route::get("analisis_bi/ventas2", [AnalisisBiController::class, 'ventas2']);
+        Route::get("analisis_bi/ventas3", [AnalisisBiController::class, 'ventas3']);
+        
+        Route::get("analisis_bi/clientes1", [AnalisisBiController::class, 'clientes1']);
+        Route::get("analisis_bi/clientes2", [AnalisisBiController::class, 'clientes2']);
+        Route::get("analisis_bi/clientes3", [AnalisisBiController::class, 'clientes3']);
 
         // REPORTES
         Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);

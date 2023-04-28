@@ -32,7 +32,27 @@ window.Swal = Swal;
 var Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
 window.Highcharts = Highcharts;
-
+window.Highcharts.setOptions({
+    lang: {
+        loading: 'Cargando...',
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+        shortMonths: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        exportButtonTitle: "Exportar",
+        printButtonTitle: "Imprimir",
+        rangeSelectorFrom: "De",
+        rangeSelectorTo: "Al",
+        rangeSelectorZoom: "Periodo",
+        downloadPNG: 'Descargar imagen PNG',
+        downloadJPEG: 'Descargar imagen JPEG',
+        downloadPDF: 'Descargar documento PDF',
+        downloadSVG: 'Descargar imagen SVG'
+        // resetZoom: "Reset",
+        // resetZoomTitle: "Reset,
+        // thousandsSep: ".",
+        // decimalPoint: ','
+    }
+});
 // MOMENT
 import moment from 'moment';
 moment.locale('es');
