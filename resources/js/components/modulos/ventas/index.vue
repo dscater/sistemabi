@@ -133,6 +133,11 @@
                                                         </b-button>
 
                                                         <b-button
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'ventas.destroy'
+                                                                )
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-danger"
@@ -141,9 +146,9 @@
                                                             @click="
                                                                 eliminaVenta(
                                                                     row.item.id,
-                                                                        row.item
-                                                                            .cliente
-                                                                            .nombre +
+                                                                    row.item
+                                                                        .cliente
+                                                                        .nombre +
                                                                         ' <br/>Con fecha ' +
                                                                         formatoFecha(
                                                                             row

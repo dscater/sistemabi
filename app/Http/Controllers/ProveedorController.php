@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\HistorialAccion;
+use App\Models\IngresoProducto;
 use App\Models\Proveedor;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,6 +109,11 @@ class ProveedorController extends Controller
     {
         DB::beginTransaction();
         try {
+            $ingresos = IngresoProducto::where("proveedor_id", $proveedor->id)->get();
+            if (count($ingresos) > 0) {
+                throw new Exception("No es posible eliminar este registro porque esta siendo utlizado");
+            }
+
             $datos_original = HistorialAccion::getDetalleRegistro($proveedor, "proveedors");
             $proveedor->delete();
             HistorialAccion::create([

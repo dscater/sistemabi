@@ -29,9 +29,6 @@
                                         <div class="elemento nom_empresa">
                                             {{ oConfiguracion.razon_social }}
                                         </div>
-                                        <div class="elemento txt_fo text-bold">
-                                            ORDEN DE VENTA
-                                        </div>
                                         <div class="elemento direccion">
                                             Dirección:
                                             {{ oConfiguracion.dir }}
@@ -40,25 +37,44 @@
                                             Teléfonos:
                                             {{ oConfiguracion.fono }}
                                         </div>
-                                        <div class="elemento detalle izquierda">
-                                            Nro. Orden:
-                                            {{ oVenta.nro_orden }}
+                                        <div class="elemento direccion">
+                                            La Paz - Bolivia
+                                        </div>
+                                        <div class="elemento direccion">
+                                            FACTURA<br />
+                                        </div>
+                                        <div class="elemento detalle centreado">
+                                            NIT:
+                                            {{ oConfiguracion.nit }}
                                             <br />
+                                            FACTURA NÚMERO:
+                                            {{ oVenta.nro_factura }}
+                                            <br />
+                                            AUTORIZACIÓN: 325545855547
+                                            <br />
+                                        </div>
+
+                                        <div class="elemento centreado">
+                                            VENTA AL POR MENOR DE PRODUCTOS
+                                            FARMACÉUTICOS, MEDICINALES,
+                                            COSMÉTICOS Y ARTÍCULOS DE TOCADOR
+                                        </div>
+                                        <div class="elemento detalle izquierda">
                                             Fecha:
                                             {{ oVenta.fecha_formateado }}
                                             &nbsp;&nbsp; Hora:
                                             {{ oVenta.hora }}
                                             <br />
-                                            Cliente:
+                                            NOMBRE:
                                             {{ oVenta.cliente?.nombre }}
                                             <br />
-                                            CI/NIT: {{ oVenta.nit }}
+                                            NIT/C.I.: {{ oVenta.nit }}
                                             <br />
-                                            Caja:
+                                            Usu.:
                                             {{ oVenta.user?.usuario }}
                                             <br />
                                         </div>
-                                        <div class="elemento">DETALLE</div>
+                                        <div class="elemento bold">DETALLE</div>
                                         <div class="cobro">
                                             <table>
                                                 <tr class="punteado">
@@ -96,7 +112,7 @@
                                                 <tr>
                                                     <td
                                                         colspan="3"
-                                                        class="bold elemento"
+                                                        class="bold elemento detalle"
                                                         style="
                                                             text-align: right;
                                                             padding-right: 4px;
@@ -104,7 +120,10 @@
                                                     >
                                                         TOTAL
                                                     </td>
-                                                    <td class="centreado bold">
+                                                    <td
+                                                        class="centreado bold detalle"
+                                                        style=""
+                                                    >
                                                         {{ oVenta.total }}
                                                     </td>
                                                 </tr>
@@ -126,7 +145,7 @@
                                                 <tr>
                                                     <td
                                                         colspan="3"
-                                                        class="bold elemento"
+                                                        class="bold elemento detalle"
                                                         style="
                                                             text-align: right;
                                                             padding-right: 4px;
@@ -134,14 +153,31 @@
                                                     >
                                                         TOTAL FINAL
                                                     </td>
-                                                    <td class="centreado bold">
+                                                    <td
+                                                        class="centreado bold detalle"
+                                                    >
                                                         {{ oVenta.total_final }}
                                                     </td>
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="izquierda literal">
+                                        <div class="centreado literal">
                                             Son: {{ literal }}
+                                        </div>
+                                        <div class="elemento">
+                                            <img :src="oVenta.qr" alt="QR" />
+                                        </div>
+                                        <div class="elemento centreado">
+                                            Ley N 453: El proveedor deberá
+                                            entregar el producto en las
+                                            modalidades y términos ofertados o
+                                            convenidos.
+                                        </div>
+                                        <div class="elemento centreado">
+                                            Este documento es la representación
+                                            gráfico a un Documento Fiscal
+                                            Digital emitido en una modalidad de
+                                            facturación en línea.
                                         </div>
                                     </div>
                                 </div>

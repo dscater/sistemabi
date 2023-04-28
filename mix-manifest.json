@@ -3,7 +3,7 @@
     "/css/app.css": "/css/app.css",
     "/css/plantilla.css": "/css/plantilla.css",
     "/js/plantilla.js": "/js/plantilla.js",
-    "/imgs/1681583846_logo.webp": "/imgs/1681583846_logo.webp",
+    "/imgs/1682712649_logo.jpg": "/imgs/1682712649_logo.jpg",
     "/imgs/avatar.png": "/imgs/avatar.png",
     "/imgs/login.jpg": "/imgs/login.jpg",
     "/imgs/login.webp": "/imgs/login.webp",
@@ -37,6 +37,5 @@
     "/webfonts/fa-solid-900.svg": "/webfonts/fa-solid-900.svg",
     "/webfonts/fa-solid-900.ttf": "/webfonts/fa-solid-900.ttf",
     "/webfonts/fa-solid-900.woff": "/webfonts/fa-solid-900.woff",
-    "/webfonts/fa-solid-900.woff2": "/webfonts/fa-solid-900.woff2",
-    "/imgs/1682712649_logo.jpg": "/imgs/1682712649_logo.jpg"
+    "/webfonts/fa-solid-900.woff2": "/webfonts/fa-solid-900.woff2"
 }

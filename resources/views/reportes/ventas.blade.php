@@ -199,7 +199,7 @@
                 </tr>
                 <tr>
                     <th class="izquierda">
-                        Caja:
+                        Usuario:
                     </th>
                     <th class="izquierda" colspan="3">{{ $venta->user->usuario }}</th>
                 </tr>

@@ -46,7 +46,9 @@ window.Highcharts.setOptions({
         downloadPNG: 'Descargar imagen PNG',
         downloadJPEG: 'Descargar imagen JPEG',
         downloadPDF: 'Descargar documento PDF',
-        downloadSVG: 'Descargar imagen SVG'
+        downloadSVG: 'Descargar imagen SVG',
+        viewFullscreen: "Pantalla completa",
+        printChart: "Imprimir"
         // resetZoom: "Reset",
         // resetZoomTitle: "Reset,
         // thousandsSep: ".",

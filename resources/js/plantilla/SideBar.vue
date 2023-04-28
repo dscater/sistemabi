@@ -79,31 +79,61 @@
                             <p>Inicio</p>
                         </router-link>
                     </li>
-                    <li class="nav-header bg-navy" v-if="true">
+                    <li
+                        class="nav-header bg-navy"
+                        v-if="
+                            permisos.includes('analisis_inventarios') ||
+                            permisos.includes('analisis_proveedores') ||
+                            permisos.includes('analisis_ventas') ||
+                            permisos.includes('analisis_clientes')
+                        "
+                    >
                         MENÚ ANÁLISIS BI
                     </li>
-                    <li class="nav-item">
-                        <router-link :to="{name:'analisis_inventarios.index'}" class="nav-link">
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('analisis_inventarios')"
+                    >
+                        <router-link
+                            :to="{ name: 'analisis_inventarios.index' }"
+                            class="nav-link"
+                        >
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>Inventario</p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link :to="{name:'analisis_proveedors.index'}" class="nav-link">
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('analisis_proveedores')"
+                    >
+                        <router-link
+                            :to="{ name: 'analisis_proveedors.index' }"
+                            class="nav-link"
+                        >
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>Proveedores</p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link :to="{name:'analisis_ventas.index'}" class="nav-link">
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('analisis_ventas')"
+                    >
+                        <router-link
+                            :to="{ name: 'analisis_ventas.index' }"
+                            class="nav-link"
+                        >
                             <i class="nav-icon fas fa-chart-pie"></i>
-                            <p>
-                                Ventas
-                            </p>
+                            <p>Ventas</p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link :to="{name:'analisis_clientes.index'}" class="nav-link">
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('analisis_clientes')"
+                    >
+                        <router-link
+                            :to="{ name: 'analisis_clientes.index' }"
+                            class="nav-link"
+                        >
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <p>Clientes</p>
                         </router-link>

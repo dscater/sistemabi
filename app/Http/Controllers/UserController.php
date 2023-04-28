@@ -102,17 +102,93 @@ class UserController extends Controller
             'configuracion.index',
             'configuracion.edit',
 
+            "analisis_inventarios",
+            "analisis_proveedores",
+            "analisis_ventas",
+            "analisis_clientes",
+
             'reportes.usuarios',
             'reportes.kardex',
             'reportes.ventas',
             'reportes.stock_productos',
             'reportes.historial_acciones',
-            'reportes.grafico_ingresos',
-            'reportes.grafico_orden',
         ],
-        'GERENCIA' => [],
-        'SUPERVISOR' => [],
-        'VENDEDOR' => [],
+        'GERENCIA' => [
+            "analisis_inventarios",
+            "analisis_proveedores",
+            "analisis_ventas",
+            "analisis_clientes",
+
+            'reportes.kardex',
+            'reportes.ventas',
+            'reportes.stock_productos',
+            'reportes.historial_acciones',
+        ],
+        'SUPERVISOR' => [
+            'proveedors.index',
+            'proveedors.create',
+            'proveedors.edit',
+            'proveedors.destroy',
+
+            'productos.index',
+            'productos.create',
+            'productos.edit',
+            'productos.destroy',
+
+            'tipo_ingresos.index',
+            'tipo_ingresos.create',
+            'tipo_ingresos.edit',
+            'tipo_ingresos.destroy',
+
+            'ingreso_productos.index',
+            'ingreso_productos.create',
+            'ingreso_productos.edit',
+            'ingreso_productos.destroy',
+
+            'tipo_salidas.index',
+            'tipo_salidas.create',
+            'tipo_salidas.edit',
+            'tipo_salidas.destroy',
+
+            'salida_productos.index',
+            'salida_productos.create',
+            'salida_productos.edit',
+            'salida_productos.destroy',
+
+            'clientes.index',
+            'clientes.create',
+            'clientes.edit',
+            'clientes.destroy',
+
+            'ventas.index',
+            'ventas.create',
+            'ventas.edit',
+            'ventas.destroy',
+
+            "analisis_inventarios",
+            "analisis_proveedores",
+            "analisis_ventas",
+            "analisis_clientes",
+
+            'reportes.kardex',
+            'reportes.ventas',
+            'reportes.stock_productos',
+            'reportes.historial_acciones',
+        ],
+        'VENDEDOR' => [
+            'clientes.index',
+            'clientes.create',
+            'clientes.edit',
+            'clientes.destroy',
+
+            'ventas.index',
+            'ventas.create',
+            'ventas.edit',
+
+            'reportes.kardex',
+            'reportes.ventas',
+            'reportes.stock_productos',
+        ],
     ];
 
 
