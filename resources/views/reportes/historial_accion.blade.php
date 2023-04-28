@@ -143,7 +143,7 @@
         }
 
         .green {
-            background: #ffc107;
+            background: #149FDA;
             color: black;
         }
 

@@ -57,123 +57,6 @@
                                                     'Producto'
                                                 "
                                             >
-                                                <div
-                                                    class="text-center form-group clearfix mb-0 mt-0"
-                                                >
-                                                    <label
-                                                        >Ajustar busqueda
-                                                        <br /><small
-                                                            ><i
-                                                                >Realizará la
-                                                                busqueda
-                                                                exactamente por
-                                                                la columna
-                                                                seleccionada</i
-                                                            ></small
-                                                        ></label
-                                                    >
-                                                </div>
-                                                <div
-                                                    class="text-center form-group clearfix mb-1"
-                                                >
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary5"
-                                                            name="sw_busqueda"
-                                                            value="todos"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                            checked=""
-                                                        />
-                                                        <label
-                                                            for="radioPrimary5"
-                                                        >
-                                                            Todos
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary6"
-                                                            name="sw_busqueda"
-                                                            value="codigo"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary6"
-                                                        >
-                                                            Código
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary7"
-                                                            name="sw_busqueda"
-                                                            value="medida"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary7"
-                                                        >
-                                                            Medida
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary8"
-                                                            name="sw_busqueda"
-                                                            value="nombre"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary8"
-                                                        >
-                                                            Nombre
-                                                        </label>
-                                                    </div>
-                                                </div>
                                                 <label
                                                     :class="{
                                                         'text-danger':
@@ -204,13 +87,7 @@
                                                     <el-option
                                                         v-for="item in aux_lista_productos"
                                                         :key="item.id"
-                                                        :label="
-                                                            item.codigo +
-                                                            ' | ' +
-                                                            item.nombre +
-                                                            ' | ' +
-                                                            item.medida
-                                                        "
+                                                        :label="item.nombre"
                                                         :value="item.id"
                                                     >
                                                     </el-option>
@@ -367,7 +244,7 @@ export default {
                 responseType: "blob",
             };
             axios
-                .post("/admin/reportes/orden_ventas", this.oReporte, config)
+                .post("/admin/reportes/ventas", this.oReporte, config)
                 .then((res) => {
                     this.errors = [];
                     this.enviando = false;

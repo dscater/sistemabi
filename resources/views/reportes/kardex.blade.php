@@ -94,10 +94,12 @@
 
         table tbody tr td {
             padding: 3px;
-            font-size: 0.75em;
+            font-size: 0.7em;
         }
 
-        tr { page-break-inside: avoid !important; }
+        tr {
+            page-break-inside: avoid !important;
+        }
 
         table tbody tr td.franco {
             background: red;
@@ -178,7 +180,6 @@
             {{ App\Models\Configuracion::first()->razon_social }}
         </h2>
         <h4 class="texto">KARDEX DE PRODUCTOS</h4>
-        <h4 class="texto">{{ $lugar }}</h4>
         <h4 class="fecha">{{ $array_dias[date('w')] }}, {{ date('d') }} de
             {{ $array_meses[date('m')] }} de {{ date('Y') }}</h4>
         <h4 class="fecha">(Expresado en bolivianos)</h4>
@@ -188,10 +189,10 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="centreado" colspan="9"><strong>{{ $registro->producto->nombre }}</strong></td>
+                    <td class="centreado" colspan="9"><strong>{{ $registro->nombre }}</strong></td>
                 </tr>
                 <tr>
-                    <th rowspan="2">FECHA</th>
+                    <th rowspan="2" width="20px">FECHA</th>
                     <th rowspan="2">DETALLE</th>
                     <th colspan="3">CANTIDADES</th>
                     <th rowspan="2">P/U</th>
@@ -207,28 +208,28 @@
                 </tr>
             </thead>
             <tbody>
-                @if (count($array_kardex[$registro->producto_id]) > 0 || $array_saldo_anterior[$registro->producto_id]['sw'])
+                @if (count($array_kardex[$registro->id]) > 0 || $array_saldo_anterior[$registro->id]['sw'])
                     @php
                         $total = 0;
                     @endphp
-                    @if ($array_saldo_anterior[$registro->producto_id]['sw'])
+                    @if ($array_saldo_anterior[$registro->id]['sw'])
                         <tr>
                             <td></td>
                             <td>SALDO ANTERIOR</td>
                             <td></td>
                             <td></td>
                             <td class="centreado">
-                                {{ $array_saldo_anterior[$registro->producto_id]['saldo_anterior']['cantidad_saldo'] }}
+                                {{ $array_saldo_anterior[$registro->id]['saldo_anterior']['cantidad_saldo'] }}
                             </td>
-                            <td class="centreado">{{ $registro->producto->precio }}</td>
+                            <td class="centreado">{{ $registro->precio }}</td>
                             <td></td>
                             <td></td>
                             <td class="centreado">
-                                {{ number_format($array_saldo_anterior[$registro->producto_id]['saldo_anterior']['monto_saldo'], 2, '.', ',') }}
+                                {{ number_format($array_saldo_anterior[$registro->id]['saldo_anterior']['monto_saldo'], 2, '.', ',') }}
                             </td>
                         </tr>
                     @endif
-                    @foreach ($array_kardex[$registro->producto_id] as $value)
+                    @foreach ($array_kardex[$registro->id] as $value)
                         <tr>
                             <td>{{ date('d-m-Y', strtotime($value['fecha'])) }}</td>
                             <td>{{ $value['detalle'] }}</td>

@@ -14,10 +14,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header bg-primary">
-                                <h4>Stock actual de cada producto</h4>
-                            </div>
                             <div class="card-body">
+                                <h4>Stock actual de cada producto</h4>
                                 <div class="row">
                                     <div
                                         class="col-md-12"
@@ -29,10 +27,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header bg-primary">
-                                <h4>Stock de producto por fechas</h4>
-                            </div>
                             <div class="card-body">
+                                <h4>Stock de producto por fechas</h4>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -109,10 +105,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header bg-primary">
-                                <h4>Predicción de stock</h4>
-                            </div>
                             <div class="card-body">
+                                <h4>Predicción de stock</h4>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
@@ -120,9 +114,7 @@
                                                 <label>Año</label>
                                                 <input
                                                     type="number"
-                                                    v-model="
-                                                        oGrafico3.anio
-                                                    "
+                                                    v-model="oGrafico3.anio"
                                                     class="form-control"
                                                 />
                                             </div>
@@ -327,7 +319,7 @@ export default {
                             labels: {
                                 rotation: -45,
                                 style: {
-                                    fontSize: "13px",
+                                    fontSize: "10px",
                                     fontFamily: "Verdana, sans-serif",
                                 },
                             },
@@ -372,7 +364,7 @@ export default {
                                     format: "{point.y:.2f}", // one decimal
                                     y: 0, // 10 pixels down from the top
                                     style: {
-                                        fontSize: "13px",
+                                        fontSize: "10px",
                                         fontFamily: "Verdana, sans-serif",
                                     },
                                 },
@@ -415,7 +407,7 @@ export default {
                             labels: {
                                 rotation: -75,
                                 style: {
-                                    fontSize: "13px",
+                                    fontSize: "10px",
                                     fontFamily: "Verdana, sans-serif",
                                 },
                             },
@@ -493,7 +485,7 @@ export default {
                             labels: {
                                 rotation: -45,
                                 style: {
-                                    fontSize: "13px",
+                                    fontSize: "10px",
                                     fontFamily: "Verdana, sans-serif",
                                 },
                             },
@@ -538,7 +530,7 @@ export default {
                                     format: "{point.y:.2f}", // one decimal
                                     y: 0, // 10 pixels down from the top
                                     style: {
-                                        fontSize: "13px",
+                                        fontSize: "10px",
                                         fontFamily: "Verdana, sans-serif",
                                     },
                                 },

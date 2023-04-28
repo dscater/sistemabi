@@ -22,43 +22,6 @@
                                                 <label
                                                     :class="{
                                                         'text-danger':
-                                                            errors.lugar_id,
-                                                    }"
-                                                    >Seleccione*</label
-                                                >
-                                                <el-select
-                                                    v-model="oReporte.lugar_id"
-                                                    filterable
-                                                    placeholder="Seleccione"
-                                                    class="d-block"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            errors.lugar_id,
-                                                    }"
-                                                >
-                                                    <el-option
-                                                        v-for="(
-                                                            item, index
-                                                        ) in [
-                                                            'ALMACEN',
-                                                            'SUCURSAL',
-                                                        ]"
-                                                        :key="index"
-                                                        :label="item"
-                                                        :value="item"
-                                                    >
-                                                    </el-option>
-                                                </el-select>
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.lugar_id"
-                                                    v-text="errors.lugar_id[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label
-                                                    :class="{
-                                                        'text-danger':
                                                             errors.filtro,
                                                     }"
                                                     >Seleccione*</label
@@ -87,6 +50,46 @@
                                                     class="error invalid-feedback"
                                                     v-if="errors.filtro"
                                                     v-text="errors.filtro[0]"
+                                                ></span>
+                                            </div>
+                                            <div
+                                                class="form-group col-md-12"
+                                                v-if="
+                                                    oReporte.filtro ==
+                                                    'Por producto'
+                                                "
+                                            >
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.producto,
+                                                    }"
+                                                    >Seleccione*</label
+                                                >
+                                                <el-select
+                                                    v-model="oReporte.producto"
+                                                    filterable
+                                                    placeholder="Seleccione"
+                                                    class="d-block"
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.producto,
+                                                    }"
+                                                >
+                                                    <el-option
+                                                        v-for="(
+                                                            item, index
+                                                        ) in listProductos"
+                                                        :key="index"
+                                                        :value="item.id"
+                                                        :label="item.nombre"
+                                                    >
+                                                    </el-option>
+                                                </el-select>
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.producto"
+                                                    v-text="errors.producto[0]"
                                                 ></span>
                                             </div>
                                         </div>
@@ -129,21 +132,28 @@ export default {
             }),
             errors: [],
             oReporte: {
-                lugar_id: "ALMACEN",
-                filtro:"Todos"
+                filtro: "TODOS",
+                producto: "",
             },
             aFechas: [],
             enviando: false,
             textoBtn: "Generar Reporte",
-            listFiltro: ["Todos", "Stock mínimos"],
-            listSucursals: [],
+            listFiltro: ["TODOS", "Por producto"],
+            listProductos: [],
             errors: [],
         };
     },
     mounted() {
         this.loadingWindow.close();
+        this.getProductos();
     },
     methods: {
+        getProductos() {
+            let url = "/admin/productos";
+            axios.get(url).then((res) => {
+                this.listProductos = res.data.productos;
+            });
+        },
         limpiarFormulario() {
             this.oReporte.filtro = "Todos";
         },

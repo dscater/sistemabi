@@ -92,7 +92,10 @@
             padding: 3px;
             font-size: 0.75em;
         }
-        tr { page-break-inside: avoid !important; }
+
+        tr {
+            page-break-inside: avoid !important;
+        }
 
         table tbody tr td.franco {
             background: red;
@@ -143,8 +146,8 @@
         }
 
         .green {
-            background: #ffc107;
-            color: black;
+            background: #149FDA;
+            color: white;
         }
 
         .txt_rojo {}
@@ -160,6 +163,7 @@
     <div class="encabezado">
         <div class="logo">
             <img src="{{ asset('imgs/' . $configuracion->first()->logo) }}">
+            {{ $configuracion->first()->logo }}
         </div>
         <h2 class="titulo">
             {{ $configuracion->first()->razon_social }}

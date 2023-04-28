@@ -106,10 +106,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get("analisis_bi/ventas1", [AnalisisBiController::class, 'ventas1']);
         Route::get("analisis_bi/ventas2", [AnalisisBiController::class, 'ventas2']);
         Route::get("analisis_bi/ventas3", [AnalisisBiController::class, 'ventas3']);
+        Route::get("analisis_bi/ventas4", [AnalisisBiController::class, 'ventas4']);
+        Route::get("analisis_bi/ventas5", [AnalisisBiController::class, 'ventas5']);
+        Route::get("analisis_bi/ventas6", [AnalisisBiController::class, 'ventas6']);
         
         Route::get("analisis_bi/clientes1", [AnalisisBiController::class, 'clientes1']);
         Route::get("analisis_bi/clientes2", [AnalisisBiController::class, 'clientes2']);
         Route::get("analisis_bi/clientes3", [AnalisisBiController::class, 'clientes3']);
+        Route::get("analisis_bi/clientes4", [AnalisisBiController::class, 'clientes4']);
+        Route::get("analisis_bi/clientes5", [AnalisisBiController::class, 'clientes5']);
+        Route::get("analisis_bi/clientes6", [AnalisisBiController::class, 'clientes6']);
 
         // REPORTES
         Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);

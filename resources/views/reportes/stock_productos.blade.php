@@ -141,8 +141,8 @@
         }
 
         .green {
-            background: #ffc107;
-            color: black;
+            background: #149FDA;
+            color: white;
         }
 
         .iquierda {
@@ -166,7 +166,6 @@
             {{ $configuracion->first()->razon_social }}
         </h2>
         <h4 class="texto">STOCK DE PRODUCTOS</h4>
-        <h4 class="texto">{{ $lugar }}</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
     </div>
     <table border="1">
@@ -180,11 +179,11 @@
                 <th class="bold">PRODUCTO</th>
                 <th class="bold" width="15%">STOCK ACTUAL</th>
             </tr>
-            @foreach ($registros as $stock)
+            @foreach ($registros as $value)
                 <tr>
                     <td class="centreado">{{ $cont++ }}</td>
-                    <td class="iquierda">{{ $stock->producto->nombre }}</td>
-                    <td class="centreado">{{ $stock->stock_actual }}</td>
+                    <td class="iquierda">{{ $value->nombre }}</td>
+                    <td class="centreado">{{ $value->stock_actual }}</td>
                 </tr>
             @endforeach
         </tbody>

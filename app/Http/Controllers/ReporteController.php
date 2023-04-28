@@ -6,10 +6,9 @@ use App\Models\Almacen;
 use App\Models\DetalleOrden;
 use App\Models\HistorialAccion;
 use App\Models\KardexProducto;
-use App\Models\OrdenVenta;
 use App\Models\Producto;
-use App\Models\SucursalStock;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -39,14 +38,9 @@ class ReporteController extends Controller
     public function kardex(Request $request)
     {
         $filtro = $request->filtro;
-        $lugar_id = $request->lugar_id;
         $producto_id = $request->producto_id;
         $fecha_ini = $request->fecha_ini;
         $fecha_fin = $request->fecha_fin;
-
-        $request->validate([
-            'lugar_id' => 'required',
-        ]);
 
         if ($request->filtro == 'Producto') {
             $request->validate([
@@ -61,46 +55,32 @@ class ReporteController extends Controller
             ]);
         }
 
-        if ($lugar_id == 'ALMACEN') {
-            $productos = Almacen::all();
-            if ($filtro != 'todos') {
-                if ($filtro == 'Producto') {
-                    $productos = Almacen::where("producto_id", $producto_id)->get();
-                }
-            }
-        } else {
-            $productos = SucursalStock::all();
-            if ($filtro != 'todos') {
-                if ($filtro == 'Producto') {
-                    $productos = SucursalStock::where("producto_id", $producto_id)
-                        ->get();
-                }
+        $productos = Producto::all();
+        if ($filtro != 'todos') {
+            if ($filtro == 'Producto') {
+                $productos = Producto::where("id", $producto_id)->get();
             }
         }
 
         $array_kardex = [];
         $array_saldo_anterior = [];
-        $sw_lugar = $lugar_id;
         foreach ($productos as $registro) {
-            $kardex = KardexProducto::where("lugar", $sw_lugar)
-                ->where('producto_id', $registro->producto_id)->get();
-            $array_saldo_anterior[$registro->producto_id] = [
+            $kardex = KardexProducto::where('producto_id', $registro->id)->get();
+            $array_saldo_anterior[$registro->id] = [
                 'sw' => false,
                 'saldo_anterior' => []
             ];
             if ($filtro == 'Rango de fechas') {
-                $kardex = KardexProducto::where("lugar", $sw_lugar)
-                    ->where('producto_id', $registro->producto_id)
+                $kardex = KardexProducto::where('producto_id', $registro->id)
                     ->whereBetween('fecha', [$fecha_ini, $fecha_fin])->get();
                 // buscar saldo anterior si existe
-                $saldo_anterior = KardexProducto::where("lugar", $sw_lugar)
-                    ->where('producto_id', $registro->producto_id)
+                $saldo_anterior = KardexProducto::where('producto_id', $registro->id)
                     ->where('fecha', '<', $fecha_ini)
                     ->orderBy('created_at', 'asc')->get()->last();
                 if ($saldo_anterior) {
                     $cantidad_saldo = $saldo_anterior->cantidad_saldo;
                     $monto_saldo = $saldo_anterior->monto_saldo;
-                    $array_saldo_anterior[$registro->producto_id] = [
+                    $array_saldo_anterior[$registro->id] = [
                         'sw' => true,
                         'saldo_anterior' => [
                             'cantidad_saldo' => $cantidad_saldo,
@@ -109,12 +89,10 @@ class ReporteController extends Controller
                     ];
                 }
             }
-            $array_kardex[$registro->producto_id] = $kardex;
+            $array_kardex[$registro->id] = $kardex;
         }
 
-        $lugar = $lugar_id;
-
-        $pdf = PDF::loadView('reportes.kardex', compact('productos', 'array_kardex', 'array_saldo_anterior', 'lugar'))->setPaper('letter', 'portrait');
+        $pdf = PDF::loadView('reportes.kardex', compact('productos', 'array_kardex', 'array_saldo_anterior'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
         $pdf->setOption('footer-right', '[page]');
@@ -122,7 +100,7 @@ class ReporteController extends Controller
         return $pdf->stream('kardex.pdf');
     }
 
-    public function orden_ventas(Request $request)
+    public function ventas(Request $request)
     {
         $filtro = $request->filtro;
         $producto_id = $request->producto_id;
@@ -141,61 +119,42 @@ class ReporteController extends Controller
             ]);
         }
 
-        $orden_ventas = OrdenVenta::all();
+        $ventas = Venta::all();
         if ($filtro != 'todos') {
             if ($filtro == 'Producto') {
-                $orden_ventas = OrdenVenta::select("orden_ventas.*")
-                    ->join("detalle_ordens", "detalle_ordens.orden_id", "=", "orden_ventas.id")
-                    ->where("detalle_ordens.producto_id", $producto_id)
+                $ventas = Venta::select("ventas.*")
+                    ->join("detalle_ventas", "detalle_ventas.venta_id", "=", "ventas.id")
+                    ->where("detalle_ventas.producto_id", $producto_id)
                     ->get();
             }
             if ($filtro == 'Rango de fechas') {
-                $orden_ventas = OrdenVenta::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                $ventas = Venta::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
             }
         }
-        $pdf = PDF::loadView('reportes.orden_ventas', compact('orden_ventas'))->setPaper('legal', 'portrait');
+        $pdf = PDF::loadView('reportes.ventas', compact('ventas'))->setPaper('legal', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
         $pdf->setOption('footer-right', '[page]');
 
-        return $pdf->download('orden_ventas.pdf');
+        return $pdf->download('ventas.pdf');
     }
 
     public function stock_productos(Request $request)
     {
-        $request->validate(['lugar_id' => 'required']);
-        $lugar_id =  $request->lugar_id;
         $filtro =  $request->filtro;
-        $lugar = "ALMACEN";
-        if ($lugar_id == 'ALMACEN') {
-            if ($filtro != 'Todos') {
-                $registros = Almacen::select("almacens.*")
-                    ->join("productos", "productos.id", "=", "almacens.producto_id")
-                    ->where("almacens.stock_actual", "<=", "productos.stock_min")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            } else {
-                $registros = Almacen::select("almacens.*")
-                    ->join("productos", "productos.id", "=", "almacens.producto_id")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            }
-        } else {
-            if ($filtro != 'Todos') {
-                $registros = SucursalStock::select("sucursal_stocks.*")
-                    ->join("productos", "productos.id", "=", "sucursal_stocks.producto_id")
-                    ->where("sucursal_stocks.stock_actual", "<=", "productos.stock_min")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            } else {
-                $registros = SucursalStock::select("sucursal_stocks.*")
-                    ->join("productos", "productos.id", "=", "sucursal_stocks.producto_id")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            }
+        $producto =  $request->producto;
+
+        if ($filtro != 'TODOS') {
+            $request->validate(['producto' => 'required']);
         }
 
-        $pdf = PDF::loadView('reportes.stock_productos', compact('registros', 'lugar'))->setPaper('legal', 'portrait');
+        $registros = Producto::orderBy("productos.nombre")->get();
+        if ($filtro != 'TODOS') {
+            $registros = Producto::where("id", $producto)->orderBy("productos.nombre")->get();
+        }
+
+
+        $pdf = PDF::loadView('reportes.stock_productos', compact('registros'))->setPaper('legal', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
         $pdf->setOption('footer-right', '[page]');
@@ -233,8 +192,8 @@ class ReporteController extends Controller
             $productos = Producto::select("productos.*")
                 ->whereExists(function ($query) {
                     $query->select(DB::raw(1))
-                        ->from('detalle_ordens')
-                        ->whereRaw('productos.id = detalle_ordens.producto_id');
+                        ->from('detalle_ventas')
+                        ->whereRaw('productos.id = detalle_ventas.producto_id');
                 })
                 ->get();
         }
@@ -242,16 +201,16 @@ class ReporteController extends Controller
         foreach ($productos as $producto) {
             $cantidad = 0;
             if ($filtro == 'Rango de fechas') {
-                $cantidad = DetalleOrden::select("detalle_ordens")
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("orden_ventas.estado", "CANCELADO")
-                    ->where("detalle_ordens.producto_id", $producto->id)
+                $cantidad = DetalleOrden::select("detalle_ventas")
+                    ->join("ventas", "ventas.id", "=", "detalle_ventas.venta_id")
+                    ->where("ventas.estado", "CANCELADO")
+                    ->where("detalle_ventas.producto_id", $producto->id)
                     ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                    ->sum("detalle_ordens.subtotal");
+                    ->sum("detalle_ventas.subtotal");
             } else {
                 $cantidad = DetalleOrden::where("producto_id", $producto->id)
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("orden_ventas.estado", "CANCELADO")
+                    ->join("ventas", "ventas.id", "=", "detalle_ventas.venta_id")
+                    ->where("ventas.estado", "CANCELADO")
                     ->sum("subtotal");
             }
             $data[] = [$producto->nombre, $cantidad ? (float)$cantidad : 0];
@@ -280,8 +239,8 @@ class ReporteController extends Controller
             $productos = Producto::select("productos.*")
                 ->whereExists(function ($query) {
                     $query->select(DB::raw(1))
-                        ->from('detalle_ordens')
-                        ->whereRaw('productos.id = detalle_ordens.producto_id');
+                        ->from('detalle_ventas')
+                        ->whereRaw('productos.id = detalle_ventas.producto_id');
                 })
                 ->get();
         }
@@ -289,9 +248,9 @@ class ReporteController extends Controller
         foreach ($productos as $producto) {
             $cantidad = 0;
             if ($filtro == 'Rango de fechas') {
-                $cantidad = count(DetalleOrden::select("detalle_ordens")
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("detalle_ordens.producto_id", $producto->id)
+                $cantidad = count(DetalleOrden::select("detalle_ventas")
+                    ->join("ventas", "ventas.id", "=", "detalle_ventas.venta_id")
+                    ->where("detalle_ventas.producto_id", $producto->id)
                     ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
                     ->get());
             } else {

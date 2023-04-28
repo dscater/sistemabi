@@ -22,43 +22,6 @@
                                                 <label
                                                     :class="{
                                                         'text-danger':
-                                                            errors.lugar_id,
-                                                    }"
-                                                    >Seleccione*</label
-                                                >
-                                                <el-select
-                                                    v-model="oReporte.lugar_id"
-                                                    filterable
-                                                    placeholder="Seleccione"
-                                                    class="d-block"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            errors.lugar_id,
-                                                    }"
-                                                >
-                                                    <el-option
-                                                        v-for="(
-                                                            item, index
-                                                        ) in [
-                                                            'ALMACEN',
-                                                            'SUCURSAL',
-                                                        ]"
-                                                        :key="index"
-                                                        :label="item"
-                                                        :value="item"
-                                                    >
-                                                    </el-option>
-                                                </el-select>
-                                                <span
-                                                    class="error invalid-feedback"
-                                                    v-if="errors.lugar_id"
-                                                    v-text="errors.lugar_id[0]"
-                                                ></span>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label
-                                                    :class="{
-                                                        'text-danger':
                                                             errors.filtro,
                                                     }"
                                                     >Seleccione*</label
@@ -94,124 +57,6 @@
                                                     'Producto'
                                                 "
                                             >
-                                                <div
-                                                    class="text-center form-group clearfix mb-0 mt-0"
-                                                >
-                                                    <label
-                                                        >Ajustar busqueda
-                                                        <br /><small
-                                                            ><i
-                                                                >Realizará la
-                                                                busqueda
-                                                                exactamente por
-                                                                la columna
-                                                                seleccionada</i
-                                                            ></small
-                                                        ></label
-                                                    >
-                                                </div>
-                                                <div
-                                                    class="text-center form-group clearfix mb-1"
-                                                >
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary5"
-                                                            name="sw_busqueda"
-                                                            value="todos"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                            checked=""
-                                                        />
-                                                        <label
-                                                            for="radioPrimary5"
-                                                        >
-                                                            Todos
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary6"
-                                                            name="sw_busqueda"
-                                                            value="codigo"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary6"
-                                                        >
-                                                            Código
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary7"
-                                                            name="sw_busqueda"
-                                                            value="medida"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary7"
-                                                        >
-                                                            Medida
-                                                        </label>
-                                                    </div>
-                                                    <div
-                                                        class="icheck-primary d-inline"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            id="radioPrimary8"
-                                                            name="sw_busqueda"
-                                                            value="nombre"
-                                                            v-model="
-                                                                sw_busqueda
-                                                            "
-                                                            @change="
-                                                                aux_lista_productos =
-                                                                    [];
-                                                                oReporte.producto_id =
-                                                                    '';
-                                                            "
-                                                        />
-                                                        <label
-                                                            for="radioPrimary8"
-                                                        >
-                                                            Nombre
-                                                        </label>
-                                                    </div>
-                                                </div>
-
                                                 <label
                                                     :class="{
                                                         'text-danger':
@@ -242,13 +87,7 @@
                                                     <el-option
                                                         v-for="item in aux_lista_productos"
                                                         :key="item.id"
-                                                        :label="
-                                                            item.codigo +
-                                                            ' | ' +
-                                                            item.nombre +
-                                                            ' | ' +
-                                                            item.medida
-                                                        "
+                                                        :label="item.nombre"
                                                         :value="item.id"
                                                     >
                                                     </el-option>
@@ -348,7 +187,6 @@ export default {
             errors: [],
             oReporte: {
                 filtro: "Todos",
-                lugar_id: "ALMACEN",
                 producto_id: "",
                 fecha_ini: "",
                 fecha_fin: "",
