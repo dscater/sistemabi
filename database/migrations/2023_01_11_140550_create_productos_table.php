@@ -18,6 +18,7 @@ class CreateProductosTable extends Migration
             $table->string("codigo", 255);
             $table->string("nombre", 255);
             $table->string("medida", 255);
+            $table->unsignedBigInteger("categoria_id");
             $table->unsignedBigInteger("grupo_id");
             $table->decimal("precio", 24, 2);
             $table->decimal("precio_mayor", 24, 2);

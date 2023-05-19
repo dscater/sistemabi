@@ -45,6 +45,13 @@ export default new Router({
             name: 'productos.index',
             component: require('./components/modulos/productos/index.vue').default,
         },
+        
+        // categorias
+        {
+            path: '/categorias',
+            name: 'categorias.index',
+            component: require('./components/modulos/categorias/index.vue').default,
+        },
 
         // tipo ingresos
         {

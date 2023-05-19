@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 28-04-2023 a las 21:37:00
+-- Tiempo de generación: 19-05-2023 a las 23:56:07
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -24,6 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `categorias`
+--
+
+CREATE TABLE `categorias` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
+(1, 'CATEGORÍA 1', NULL, NULL),
+(3, 'CATEGORIA 2', '2023-05-19 23:49:01', '2023-05-19 23:49:01');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `clientes`
 --
 
@@ -34,7 +55,7 @@ CREATE TABLE `clientes` (
   `ci_exp` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nit` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fono` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `correo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `dir` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -235,7 +256,19 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (74, 2, 'ELIMINACIÓN', 'EL USUARIO JPERES ELIMINÓ UN PROVEEDOR', 'created_at: 2023-04-28 17:07:52<br/>descripcion: <br/>dir: ASD<br/>fecha_registro: 2023-04-28<br/>fono: ASD<br/>id: 3<br/>nit: ASD<br/>nombre_contacto: <br/>razon_social: ASD<br/>updated_at: 2023-04-28 17:07:52<br/>', NULL, 'PROVEEDORES', '2023-04-28', '17:07:54', '2023-04-28 21:07:54', '2023-04-28 21:07:54'),
 (75, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: SUPERVISOR<br/>updated_at: 2023-04-28 17:06:13<br/>usuario: JPERES<br/>', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: VENDEDOR<br/>updated_at: 2023-04-28 17:11:20<br/>usuario: JPERES<br/>', 'USUARIOS', '2023-04-28', '17:11:20', '2023-04-28 21:11:20', '2023-04-28 21:11:20'),
 (76, 2, 'CREACIÓN', 'EL USUARIO JPERES REGISTRO UNA ORDEN DE VENTA', 'cliente_id: 2<br/>created_at: 2023-04-28 17:11:48<br/>descuento: 0<br/>estado: CANCELADO<br/>fecha_registro: 2023-04-28<br/>id: 8<br/>nit: 1231231<br/>total: 100.00<br/>total_final: 100.00<br/>updated_at: 2023-04-28 17:11:48<br/>user_id: 2<br/>', NULL, 'ORDEN DE VENTA', '2023-04-28', '17:11:48', '2023-04-28 21:11:48', '2023-04-28 21:11:48'),
-(77, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: VENDEDOR<br/>updated_at: 2023-04-28 17:11:20<br/>usuario: JPERES<br/>', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: SUPERVISOR<br/>updated_at: 2023-04-28 17:12:44<br/>usuario: JPERES<br/>', 'USUARIOS', '2023-04-28', '17:12:44', '2023-04-28 21:12:44', '2023-04-28 21:12:44');
+(77, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: VENDEDOR<br/>updated_at: 2023-04-28 17:11:20<br/>usuario: JPERES<br/>', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: <br/>created_at: 2023-04-24 16:23:30<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-24<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: MAMANI<br/>nombre: JUAN<br/>password: $2y$10$ZTabc8GZiG/WlSL4nJbloe3WMay9P10kVUOlfsW/aFjhqzA9mi/jS<br/>paterno: PERES<br/>tipo: SUPERVISOR<br/>updated_at: 2023-04-28 17:12:44<br/>usuario: JPERES<br/>', 'USUARIOS', '2023-04-28', '17:12:44', '2023-04-28 21:12:44', '2023-04-28 21:12:44'),
+(78, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PRODUCTO', 'codigo_almacen: A002<br/>codigo_producto: P00SIN<br/>created_at: 2023-05-19 19:26:32<br/>descripcion: DEC<br/>fecha_registro: 2023-05-19<br/>id: 8<br/>imagen: <br/>nombre: SIN DEPENDENCIA<br/>precio: 100<br/>stock_actual: 0<br/>stock_min: 50<br/>updated_at: 2023-05-19 19:26:32<br/>', NULL, 'PRODUCTOS', '2023-05-19', '19:26:33', '2023-05-19 23:26:33', '2023-05-19 23:26:33'),
+(79, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINO UN PRODUCTO', 'codigo_almacen: A002<br/>codigo_producto: P00SIN<br/>created_at: 2023-05-19 19:26:32<br/>descripcion: DEC<br/>fecha_registro: 2023-05-19<br/>id: 8<br/>imagen: <br/>nombre: SIN DEPENDENCIA<br/>precio: 100.00<br/>stock_actual: 0<br/>stock_min: 50<br/>updated_at: 2023-05-19 19:26:32<br/>', NULL, 'PRODUCTOS', '2023-05-19', '19:29:41', '2023-05-19 23:29:41', '2023-05-19 23:29:41'),
+(80, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN PRODUCTO', 'codigo_almacen: ASDA<br/>codigo_producto: ASDASD<br/>created_at: 2023-05-19 19:31:12<br/>descripcion: ASD<br/>fecha_registro: 2023-05-19<br/>id: 9<br/>imagen: <br/>nombre: ASDASD<br/>precio: 100<br/>stock_actual: 0<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:31:12<br/>', NULL, 'PRODUCTOS', '2023-05-19', '19:31:12', '2023-05-19 23:31:12', '2023-05-19 23:31:12'),
+(81, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN INGRESO DE PRODUCTO', 'cantidad: 900<br/>created_at: 2023-05-19 19:31:58<br/>descripcion: <br/>fecha_caducidad: 2025-02-22<br/>fecha_fabricacion: 2023-05-19<br/>fecha_registro: 2023-05-19<br/>id: 6<br/>lote: 9090<br/>precio_compra: 100<br/>producto_id: 9<br/>proveedor_id: 1<br/>tipo_ingreso_id: 1<br/>updated_at: 2023-05-19 19:31:58<br/>', NULL, 'INGRESO DE PRODUCTOS', '2023-05-19', '19:31:58', '2023-05-19 23:31:58', '2023-05-19 23:31:58'),
+(82, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINO UN PRODUCTO', 'codigo_almacen: ASDA<br/>codigo_producto: ASDASD<br/>created_at: 2023-05-19 19:31:12<br/>descripcion: ASD<br/>fecha_registro: 2023-05-19<br/>id: 9<br/>imagen: <br/>nombre: ASDASD<br/>precio: 100.00<br/>stock_actual: 900<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:31:58<br/>', NULL, 'PRODUCTOS', '2023-05-19', '19:32:12', '2023-05-19 23:32:12', '2023-05-19 23:32:12'),
+(83, 1, 'CREACIÓN', 'EL USUARIO admin REGISTRO UN TIPO DE INGRESO', 'created_at: 2023-05-19 19:47:02<br/>id: 2<br/>nombre: CATEGORIA 2<br/>updated_at: 2023-05-19 19:47:02<br/>', NULL, 'TIPO DE INGRESOS', '2023-05-19', '19:47:02', '2023-05-19 23:47:02', '2023-05-19 23:47:02'),
+(84, 1, 'MODIFICACIÓN', 'EL USUARIO admin MODIFICÓ UN TIPO DE INGRESO', 'created_at: 2023-05-19 19:47:02<br/>id: 2<br/>nombre: CATEGORIA 2<br/>updated_at: 2023-05-19 19:47:02<br/>', 'created_at: 2023-05-19 19:47:02<br/>id: 2<br/>nombre: CATEGORIA 2ASDSA<br/>updated_at: 2023-05-19 19:47:11<br/>', 'TIPO DE INGRESOS', '2023-05-19', '19:47:11', '2023-05-19 23:47:11', '2023-05-19 23:47:11'),
+(85, 1, 'ELIMINACIÓN', 'EL USUARIO admin ELIMINÓ UN TIPO DE INGRESO', 'created_at: 2023-05-19 19:47:02<br/>id: 2<br/>nombre: CATEGORIA 2ASDSA<br/>updated_at: 2023-05-19 19:47:11<br/>', NULL, 'TIPO DE INGRESOS', '2023-05-19', '19:47:21', '2023-05-19 23:47:21', '2023-05-19 23:47:21'),
+(86, 2, 'CREACIÓN', 'EL USUARIO JPERES REGISTRO UN TIPO DE INGRESO', 'created_at: 2023-05-19 19:49:01<br/>id: 3<br/>nombre: CATEGORIA 2<br/>updated_at: 2023-05-19 19:49:01<br/>', NULL, 'TIPO DE INGRESOS', '2023-05-19', '19:49:01', '2023-05-19 23:49:01', '2023-05-19 23:49:01'),
+(87, 2, 'CREACIÓN', 'EL USUARIO JPERES REGISTRO UN PRODUCTO', 'categoria_id: 1<br/>codigo_almacen: A002222<br/>codigo_producto: P0044<br/>created_at: 2023-05-19 19:55:04<br/>descripcion: DESC<br/>fecha_registro: 2023-05-19<br/>id: 10<br/>imagen: <br/>nombre: PRODUCTO NUEVO P0044<br/>precio: 99<br/>stock_actual: 0<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:55:04<br/>', NULL, 'PRODUCTOS', '2023-05-19', '19:55:04', '2023-05-19 23:55:04', '2023-05-19 23:55:04'),
+(88, 2, 'MODIFICACIÓN', 'EL USUARIO JPERES MODIFICÓ UN PRODUCTO', 'categoria_id: 1<br/>codigo_almacen: A002222<br/>codigo_producto: P0044<br/>created_at: 2023-05-19 19:55:04<br/>descripcion: DESC<br/>fecha_registro: 2023-05-19<br/>id: 10<br/>imagen: <br/>nombre: PRODUCTO NUEVO P0044<br/>precio: 99.00<br/>stock_actual: 0<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:55:04<br/>', 'categoria_id: 3<br/>codigo_almacen: A002222<br/>codigo_producto: P0044<br/>created_at: 2023-05-19 19:55:04<br/>descripcion: DESC<br/>fecha_registro: 2023-05-19<br/>id: 10<br/>imagen: <br/>nombre: PRODUCTO NUEVO P0044<br/>precio: 99.00<br/>stock_actual: 0<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:55:13<br/>', 'PRODUCTOS', '2023-05-19', '19:55:13', '2023-05-19 23:55:13', '2023-05-19 23:55:13'),
+(89, 2, 'MODIFICACIÓN', 'EL USUARIO JPERES MODIFICÓ UN PRODUCTO', 'categoria_id: 1<br/>codigo_almacen: A001<br/>codigo_producto: P001<br/>created_at: 2023-04-24 17:36:20<br/>descripcion: <br/>fecha_registro: 2023-04-24<br/>id: 1<br/>imagen: <br/>nombre: PASTILLAS A<br/>precio: 20.00<br/>stock_actual: 93<br/>stock_min: 10<br/>updated_at: 2023-04-27 15:00:50<br/>', 'categoria_id: 3<br/>codigo_almacen: A001<br/>codigo_producto: P001<br/>created_at: 2023-04-24 17:36:20<br/>descripcion: <br/>fecha_registro: 2023-04-24<br/>id: 1<br/>imagen: <br/>nombre: PASTILLAS A<br/>precio: 20.00<br/>stock_actual: 93<br/>stock_min: 10<br/>updated_at: 2023-05-19 19:55:53<br/>', 'PRODUCTOS', '2023-05-19', '19:55:53', '2023-05-19 23:55:53', '2023-05-19 23:55:53');
 
 -- --------------------------------------------------------
 
@@ -249,7 +282,7 @@ CREATE TABLE `ingreso_productos` (
   `proveedor_id` bigint UNSIGNED NOT NULL,
   `precio_compra` decimal(8,2) NOT NULL,
   `cantidad` double NOT NULL,
-  `lote` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lote` varchar(155) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_fabricacion` date NOT NULL,
   `fecha_caducidad` date NOT NULL,
   `tipo_ingreso_id` bigint UNSIGNED NOT NULL,
@@ -332,7 +365,8 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2023_04_27_123517_create_fecha_stocks_table', 1);
+(1, '2023_04_27_123517_create_fecha_stocks_table', 1),
+(2, '2023_05_19_193721_create_categorias_table', 2);
 
 -- --------------------------------------------------------
 
@@ -361,13 +395,14 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `productos` (
   `id` bigint UNSIGNED NOT NULL,
   `codigo_almacen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codigo_producto` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codigo_producto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `precio` decimal(24,2) NOT NULL,
   `stock_min` double NOT NULL,
   `stock_actual` double NOT NULL,
-  `imagen` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `categoria_id` bigint UNSIGNED NOT NULL,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -377,11 +412,12 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `codigo_almacen`, `codigo_producto`, `nombre`, `descripcion`, `precio`, `stock_min`, `stock_actual`, `imagen`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 'A001', 'P001', 'PASTILLAS A', '', 20.00, 10, 93, NULL, '2023-04-24', '2023-04-24 21:36:20', '2023-04-27 19:00:50'),
-(2, 'A001', 'P002', 'GEL ANTIBACTERIAL', '', 35.00, 5, 99, NULL, '2023-04-24', '2023-04-24 21:44:24', '2023-04-28 19:53:34'),
-(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 69, NULL, '2023-04-24', '2023-04-24 21:45:17', '2023-04-28 21:11:48'),
-(7, 'A00111', 'P004', 'PRODUCTO 4', '', 12.00, 12, 86, '1682696496_7.jpg', '2023-04-24', '2023-04-24 21:47:54', '2023-04-28 19:53:34');
+INSERT INTO `productos` (`id`, `codigo_almacen`, `codigo_producto`, `nombre`, `descripcion`, `precio`, `stock_min`, `stock_actual`, `imagen`, `categoria_id`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'A001', 'P001', 'PASTILLAS A', '', 20.00, 10, 93, '', 3, '2023-04-24', '2023-04-24 21:36:20', '2023-05-19 23:55:53'),
+(2, 'A001', 'P002', 'GEL ANTIBACTERIAL', '', 35.00, 5, 99, NULL, 1, '2023-04-24', '2023-04-24 21:44:24', '2023-04-28 19:53:34'),
+(3, 'A001', 'P003', 'PRODUCTO 3', '', 100.00, 10, 69, NULL, 1, '2023-04-24', '2023-04-24 21:45:17', '2023-04-28 21:11:48'),
+(7, 'A00111', 'P004', 'PRODUCTO 4', '', 12.00, 12, 86, '1682696496_7.jpg', 1, '2023-04-24', '2023-04-24 21:47:54', '2023-04-28 19:53:34'),
+(10, 'A002222', 'P0044', 'PRODUCTO NUEVO P0044', 'DESC', 99.00, 10, 0, '', 3, '2023-05-19', '2023-05-19 23:55:04', '2023-05-19 23:55:13');
 
 -- --------------------------------------------------------
 
@@ -549,6 +585,12 @@ INSERT INTO `ventas` (`id`, `user_id`, `cliente_id`, `nit`, `total`, `descuento`
 --
 
 --
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
@@ -662,6 +704,12 @@ ALTER TABLE `ventas`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
@@ -683,31 +731,31 @@ ALTER TABLE `detalle_ventas`
 -- AUTO_INCREMENT de la tabla `fecha_stocks`
 --
 ALTER TABLE `fecha_stocks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT de la tabla `ingreso_productos`
 --
 ALTER TABLE `ingreso_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `kardex_productos`
 --
 ALTER TABLE `kardex_productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -719,7 +767,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedors`

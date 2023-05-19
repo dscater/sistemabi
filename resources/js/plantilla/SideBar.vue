@@ -329,6 +329,18 @@
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('categorias.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'categorias.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Categorías</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="permisos.includes('tipo_ingresos.index')"
                     >
                         <router-link

@@ -178,6 +178,36 @@
                                     v-text="errors.imagen[0]"
                                 ></span>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.categoria_id,
+                                    }"
+                                    >Categoría*</label
+                                >
+                                <el-select
+                                    placeholder="Categoría"
+                                    class="w-100"
+                                    :class="{
+                                        'is-invalid': errors.categoria_id,
+                                    }"
+                                    v-model="producto.categoria_id"
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="item in listCategorias"
+                                        :key="item.id"
+                                        :value="item.id"
+                                        :label="item.nombre"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.categoria_id"
+                                    v-text="errors.categoria_id[0]"
+                                ></span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -226,6 +256,7 @@ export default {
                 stock_min: "",
                 stock_actual: "",
                 imagen: null,
+                categoria_id: "",
             },
         },
     },
@@ -261,13 +292,19 @@ export default {
             bModal: this.muestra_modal,
             enviando: false,
             errors: [],
-            listGrupos: [],
+            listCategorias: [],
         };
     },
     mounted() {
         this.bModal = this.muestra_modal;
+        this.getCategorias();
     },
     methods: {
+        getCategorias() {
+            axios.get("/admin/categorias").then((response) => {
+                this.listCategorias = response.data.categorias;
+            });
+        },
         setRegistroModal() {
             this.enviando = true;
             try {
@@ -311,7 +348,11 @@ export default {
                     "imagen",
                     this.producto.imagen ? this.producto.imagen : ""
                 );
-                
+                formdata.append(
+                    "categoria_id",
+                    this.producto.categoria_id ? this.producto.categoria_id : ""
+                );
+
                 if (this.accion == "edit") {
                     url = "/admin/productos/" + this.producto.id;
                     formdata.append("_method", "PUT");
@@ -395,6 +436,7 @@ export default {
             this.producto.descripcion = "";
             this.producto.precio = "";
             this.producto.stock_min = "";
+            this.producto.categoria_id = "";
             this.$refs.input_file.value = null;
         },
     },

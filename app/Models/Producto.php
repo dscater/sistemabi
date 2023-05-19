@@ -11,11 +11,10 @@ class Producto extends Model
 
     protected $fillable = [
         "codigo_almacen", "codigo_producto", "nombre", "descripcion", "precio",
-        "stock_min", "stock_actual", "imagen", "fecha_registro",
+        "stock_min", "stock_actual", "imagen", "categoria_id", "fecha_registro",
     ];
 
     protected $appends = ["url_imagen"];
-
 
     public function getUrlImagenAttribute()
     {
@@ -66,5 +65,24 @@ class Producto extends Model
             ]);
         }
         return true;
+    }
+
+    public function kardex_productos()
+    {
+        return $this->hasMany(KardexProducto::class, 'producto_id');
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
+
+    public function ingreso_productos()
+    {
+        return $this->hasMany(IngresoProducto::class, 'producto_id');
+    }
+    public function salida_productos()
+    {
+        return $this->hasMany(SalidaProducto::class, 'producto_id');
     }
 }

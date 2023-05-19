@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Productos</h1>
+                        <h1>Categorías</h1>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                                         <button
                                             v-if="
                                                 permisos.includes(
-                                                    'productos.create'
+                                                    'categorias.create'
                                                 )
                                             "
                                             class="btn btn-primary btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');
-                                                limpiaProducto();
+                                                limpiaCategoria();
                                             "
                                         >
                                             <i class="fa fa-plus"></i>
@@ -35,7 +35,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body pt-1">
+                            <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
                                         <b-form-group
@@ -50,7 +50,6 @@
                                                 <b-form-input
                                                     id="filter-input"
                                                     v-model="filter"
-                                                    @keyup="listaProductos"
                                                     type="search"
                                                     placeholder="Buscar"
                                                 ></b-form-input>
@@ -60,10 +59,7 @@
                                                         class="bg-primary"
                                                         variant="primary"
                                                         :disabled="!filter"
-                                                        @click="
-                                                            filter = '';
-                                                            listaProductos();
-                                                        "
+                                                        @click="filter = ''"
                                                         >Borrar</b-button
                                                     >
                                                 </b-input-group-append>
@@ -80,23 +76,14 @@
                                                 :items="listRegistros"
                                                 show-empty
                                                 stacked="md"
-                                                :currentPage="currentPage"
-                                                :perPage="perPage"
                                                 responsive
+                                                :current-page="currentPage"
+                                                :per-page="perPage"
+                                                @filtered="onFiltered"
                                                 empty-text="Sin resultados"
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(imagen)="row">
-                                                    <img
-                                                        :src="
-                                                            row.item.url_imagen
-                                                        "
-                                                        alt="Imagen"
-                                                        height="57px"
-                                                    />
-                                                </template>
-
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -135,7 +122,7 @@
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
                                                             @click="
-                                                                eliminaProducto(
+                                                                eliminaCategoria(
                                                                     row.item.id,
                                                                     row.item
                                                                         .nombre
@@ -171,7 +158,7 @@
                                                 v-if="perPage"
                                             >
                                                 <b-pagination
-                                                    v-model="page"
+                                                    v-model="currentPage"
                                                     :total-rows="totalRows"
                                                     :per-page="perPage"
                                                     align="left"
@@ -189,9 +176,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :producto="oProducto"
+            :categoria="oCategoria"
             @close="muestra_modal = false"
-            @envioModal="listaProductos"
+            @envioModal="getCategorias"
         ></Nuevo>
     </div>
 </template>
@@ -209,23 +196,9 @@ export default {
             listRegistros: [],
             showOverlay: false,
             fields: [
-                {
-                    key: "codigo_almacen",
-                    label: "Código Almacén",
-                },
-                {
-                    key: "codigo_producto",
-                    label: "Código de Producto",
-                },
-                { key: "nombre", label: "Nombre Producto" },
-                { key: "precio", label: "Precio de venta" },
-                { key: "stock_min", label: "Stock mínimo" },
-                { key: "stock_actual", label: "Stock actual" },
-                { key: "categoria.nombre", label: "Categoría" },
-                { key: "imagen", label: "Imagen referencial" },
+                { key: "nombre", label: "Nombre", sortable: true },
                 { key: "accion", label: "Acción" },
             ],
-            isBusy: false,
             loading: true,
             fullscreenLoading: true,
             loadingWindow: Loading.service({
@@ -233,18 +206,10 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oProducto: {
+            oCategoria: {
                 id: 0,
-                codigo_almacen: "",
-                codigo_producto: "",
                 nombre: "",
-                descripcion: "",
-                precio: "",
-                stock_min: "",
-                imagen: null,
-                categoria_id: "",
             },
-            page: 1,
             currentPage: 1,
             perPage: 5,
             pageOptions: [
@@ -253,49 +218,34 @@ export default {
                 { value: 25, text: "Mostrar 25 Registros" },
                 { value: 50, text: "Mostrar 50 Registros" },
                 { value: 100, text: "Mostrar 100 Registros" },
-                // { value: this.totalRows, text: "Mostrar Todo" },
+                { value: this.totalRows, text: "Mostrar Todo" },
             ],
             totalRows: 10,
             filter: null,
-            sw_busqueda: "todos",
-            sortBy: null,
-            sortDesc: null,
-            links: null,
-            descargando: false,
         };
     },
-    watch: {},
     mounted() {
         this.loadingWindow.close();
-        this.listaProductos();
+        this.getCategorias();
     },
     methods: {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
-            this.oProducto.id = item.id;
-            this.oProducto.codigo_almacen = item.codigo_almacen
-                ? item.codigo_almacen
-                : "";
-            this.oProducto.codigo_producto = item.codigo_producto
-                ? item.codigo_producto
-                : "";
-            this.oProducto.nombre = item.nombre ? item.nombre : "";
-            this.oProducto.descripcion = item.descripcion
+            this.oCategoria.id = item.id;
+            this.oCategoria.nombre = item.nombre ? item.nombre : "";
+            this.oCategoria.descripcion = item.descripcion
                 ? item.descripcion
-                : "";
-            this.oProducto.precio = item.precio ? item.precio : "";
-            this.oProducto.stock_min = item.stock_min ? item.stock_min : "";
-            this.oProducto.categoria_id = item.categoria_id
-                ? item.categoria_id
                 : "";
 
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
-        listaProductos() {
+
+        // Listar Categorias
+        getCategorias() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/productos";
+            let url = "/admin/categorias";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -305,15 +255,14 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.productos;
+                    this.listRegistros = res.data.categorias;
                     this.totalRows = res.data.total;
                 });
         },
-
-        eliminaProducto(id, descripcion) {
+        eliminaCategoria(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
-                html: `Esta acción eliminara también los registros de Kardex del almacén; siempre y cuando no se hallan realizado ventas<br><strong>${descripcion}</strong>`,
+                html: `<strong>${descripcion}</strong>`,
                 showCancelButton: true,
                 confirmButtonColor: "#149FDA",
                 confirmButtonText: "Si, eliminar",
@@ -323,17 +272,17 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/productos/" + id, {
+                        .post("/admin/categorias/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.listaProductos();
+                            this.getCategorias();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
                                 title: res.data.msj,
                                 showConfirmButton: false,
-                                timer: 2500,
+                                timer: 1500,
                             });
                         })
                         .catch((error) => {
@@ -362,62 +311,24 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", producto = null) {
+        abreModal(tipo_accion = "nuevo", categoria = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (producto) {
-                this.oProducto = producto;
+            if (categoria) {
+                this.oCategoria = categoria;
             }
         },
-        limpiaProducto() {
-            this.oProducto.codigo = "";
-            this.oProducto.nombre = "";
-            this.oProducto.medida = "";
-            this.oProducto.grupo_id = "";
-            this.oProducto.precio = "";
-            this.oProducto.precio_mayor = "";
-            this.oProducto.stock_min = "";
-            this.oProducto.categoria_id = "";
-            this.oProducto.descontar_stock = "SI";
+        onFiltered(filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering
+            this.totalRows = filteredItems.length;
+            this.currentPage = 1;
+        },
+        limpiaCategoria() {
+            this.oCategoria.nombre = "";
+            this.oCategoria.descripcion = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
-        },
-        descargarExcel() {
-            this.descargando = true;
-            let config = {
-                responseType: "blob",
-            };
-            axios
-                .post(
-                    "/admin/productos/excel",
-                    {
-                        value: this.filter,
-                        sw_busqueda: this.sw_busqueda,
-                    },
-                    config
-                )
-                .then((response) => {
-                    var fileURL = window.URL.createObjectURL(
-                        new Blob([response.data])
-                    );
-                    var fileLink = document.createElement("a");
-                    fileLink.href = fileURL;
-                    fileLink.setAttribute("download", "productos.xlsx");
-                    document.body.appendChild(fileLink);
-
-                    fileLink.click();
-                    this.descargando = false;
-                })
-                .catch(async (error) => {
-                    console.log(error);
-                    let responseObj = await error.response.data.text();
-                    responseObj = JSON.parse(responseObj);
-                    this.enviando = false;
-                    if (error.response) {
-                    }
-                    this.descargando = false;
-                });
         },
     },
 };

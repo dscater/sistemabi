@@ -84,6 +84,24 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                            <template
+                                                    #cell(fechas)="row"
+                                                >
+                                                <strong>Fabricación: </strong>
+                                                    {{
+                                                        formatoFecha(
+                                                            row.item
+                                                                .fecha_fabricacion
+                                                        )
+                                                    }}<br>
+                                                    <strong>Caducidad: </strong>
+                                                    {{
+                                                        formatoFecha(
+                                                            row.item
+                                                                .fecha_caducidad
+                                                        )
+                                                    }}<br>
+                                                </template>
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -205,7 +223,7 @@ export default {
             showOverlay: false,
             fields: [
                 { key: "producto.nombre", label: "Producto", sortable: true },
-                { key: "proveedor.nombre", label: "Proveedor", sortable: true },
+                { key: "proveedor.razon_social", label: "Proveedor", sortable: true },
                 { key: "precio_compra", label: "Precio", sortable: true },
                 { key: "cantidad", label: "Cantidad", sortable: true },
                 { key: "lote", label: "Lote", sortable: true },

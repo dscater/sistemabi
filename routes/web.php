@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalisisBiController;
+use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\HistorialAccionController;
@@ -53,6 +54,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get("productos/getStock", [ProductoController::class, 'getStock']);
         Route::get("productos/buscar_producto", [ProductoController::class, 'buscar_producto']);
         Route::resource('productos', ProductoController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Categorias
+        Route::resource('categorias', CategoriaController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 

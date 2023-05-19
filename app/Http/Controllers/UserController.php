@@ -69,6 +69,11 @@ class UserController extends Controller
             'productos.edit',
             'productos.destroy',
 
+            'categorias.index',
+            'categorias.create',
+            'categorias.edit',
+            'categorias.destroy',
+
             'tipo_ingresos.index',
             'tipo_ingresos.create',
             'tipo_ingresos.edit',
@@ -134,6 +139,11 @@ class UserController extends Controller
             'productos.create',
             'productos.edit',
             'productos.destroy',
+
+            'categorias.index',
+            'categorias.create',
+            'categorias.edit',
+            'categorias.destroy',
 
             'tipo_ingresos.index',
             'tipo_ingresos.create',

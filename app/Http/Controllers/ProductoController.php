@@ -33,7 +33,7 @@ class ProductoController extends Controller
 
     public function index(Request $request)
     {
-        $productos = Producto::orderBy("productos.codigo_almacen", "ASC")
+        $productos = Producto::with("categoria")->orderBy("productos.codigo_almacen", "ASC")
             ->orderBy("productos.codigo_producto", "ASC")
             ->orderBy("productos.nombre", "ASC")
             ->get();
@@ -335,31 +335,12 @@ class ProductoController extends Controller
             // validar que no exista en orden de ventas
             $orden_ventas = DetalleVenta::where("producto_id", $producto->id)->get();
             if (count($orden_ventas) > 0) {
-                throw new Exception('No es posible eliminar el registro debido a que se realizaron Orden de ventas con este producto');
+                throw new Exception('No es posible eliminar el registro debido a que se realizaron ventas con este producto');
             }
 
-            if ($producto->almacen) {
-                $elimina_kardex = KardexProducto::where("lugar", "ALMACEN")
-                    ->where("producto_id", $producto->id)
-                    ->get()->first();
-                if ($elimina_kardex) {
-                    $elimina_kardex->delete();
-                }
-                $producto->almacen->delete();
-            }
-
-            if (count($producto->stock_sucursal) > 0) {
-                foreach ($producto->stock_sucursal as $value) {
-                    $elimina_kardex = KardexProducto::where("lugar", "SUCURSAL")
-                        ->where("lugar_id", $value->sucursal_id)
-                        ->where("producto_id", $producto->id)
-                        ->get()->first();
-                    if ($elimina_kardex) {
-                        $elimina_kardex->delete();
-                    }
-                    $value->delete();
-                }
-            }
+            $producto->ingreso_productos()->delete();
+            $producto->salida_productos()->delete();
+            $producto->kardex_productos()->delete();
 
             $datos_original = HistorialAccion::getDetalleRegistro($producto, "productos");
 
