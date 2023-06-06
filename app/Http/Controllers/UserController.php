@@ -107,10 +107,10 @@ class UserController extends Controller
             'configuracion.index',
             'configuracion.edit',
 
-            //"analisis_inventarios",
-            //"analisis_proveedores",
-            //"analisis_ventas",
-            //"analisis_clientes",
+            "analisis_inventarios",
+            "analisis_proveedores",
+            "analisis_ventas",
+            "analisis_clientes",
 
             'reportes.usuarios',
             'reportes.kardex',
@@ -175,10 +175,10 @@ class UserController extends Controller
             'ventas.edit',
             'ventas.destroy',
 
-            //"analisis_inventarios",
-            //"analisis_proveedores",
-            //"analisis_ventas",
-            //"analisis_clientes",
+            "analisis_inventarios",
+            "analisis_proveedores",
+            "analisis_ventas",
+            "analisis_clientes",
 
             'reportes.kardex',
             'reportes.ventas',
