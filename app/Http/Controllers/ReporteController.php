@@ -30,7 +30,12 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('reportes.usuarios', compact('usuarios'))->setPaper('legal', 'landscape');
 
         // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
         return $pdf->download('Usuarios.pdf');
     }
@@ -95,7 +100,12 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('reportes.kardex', compact('productos', 'array_kardex', 'array_saldo_anterior'))->setPaper('letter', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
         return $pdf->stream('kardex.pdf');
     }
@@ -134,7 +144,12 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('reportes.ventas', compact('ventas'))->setPaper('legal', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
 
         return $pdf->download('ventas.pdf');
     }
@@ -157,7 +172,12 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('reportes.stock_productos', compact('registros'))->setPaper('legal', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
         return $pdf->download('stock_productos.pdf');
     }
 
@@ -172,7 +192,12 @@ class ReporteController extends Controller
         $pdf = PDF::loadView('reportes.historial_accion', compact('historial_accions'))->setPaper('legal', 'portrait');
 
         // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 9, array(0, 0, 0));
         return $pdf->download('historial_accions.pdf');
     }
 
