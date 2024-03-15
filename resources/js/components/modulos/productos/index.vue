@@ -171,7 +171,7 @@
                                                 v-if="perPage"
                                             >
                                                 <b-pagination
-                                                    v-model="page"
+                                                    v-model="currentPage"
                                                     :total-rows="totalRows"
                                                     :per-page="perPage"
                                                     align="left"
